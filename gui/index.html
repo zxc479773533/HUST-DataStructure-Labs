@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>数据结构实验演示系统</title>
+	<link type="text/css" href="css/main.css" rel="stylesheet">
+	<script type="text/javascript" src="js/main.js"></script>
+	<script type="text/javascript" src="js/client.js"></script>
+</head>
+
+
+<body>
+	<div id="main">
+		<div class="title">
+			<img align="right" src="images/title.png"/>
+		</div>
+		<div class="book">
+			<img id="book" src="images/book.jpg">
+		</div>
+		<div class="output">
+			<h2>&emsp;结果输出：</h2>
+			<div id="console">
+				<div id ="console_content"></div>
+				<div id="console_end"></div>
+			</div>
+		</div>
+		<div class="control">
+			<label>
+				<h2 style="color:aliceblue;">结构选择:</h2>
+			</label>
+			<script>
+				function makeNextSelete(val) {
+					if (val == 'Main') {
+						document.getElementById('mainForm').innerHTML = makeMainButton();
+					}
+					else {
+						document.getElementById('mainForm').innerHTML = makeFuncChoose(val);						
+					}
+				}
+				function makeForm(structure, func) {
+					document.getElementById('funcForm').innerHTML = makeFormHTML(structure, func);
+				}
+			</script>
+			<select id="choose_structure" onchange="makeNextSelete(getElementById('choose_structure').value)">
+				<option value="Main">请选择要演示的数据结构</option>
+				<option value="Linearlist">基于顺序存储结构的线性表</option>
+				<option value="Linklist">基于链式存储结构的线性表</option>
+				<option value="Binarytree">基于二叉链表的二叉树</option>
+				<option value="Graph">基于领接表的图</option>
+			</select>
+			<div id="mainForm" onsubmit="return false;">
+				<br/><br/><br/>
+				<ul>
+					<li><h3 style="color:aliceblue;">点击清空所有数据</h3></li>
+					<li>
+						<input id="submit" type="submit" value="清空" onclick="ws.send('Clear')"/>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

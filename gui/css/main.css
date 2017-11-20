@@ -1,0 +1,76 @@
+@charset "utf-8";
+/* CSS Document */
+
+#main {
+	border: 2px ridge blue;
+	margin: auto;
+	background: url(../images/background.jpg);
+	height: 663px;
+	width: 1024px;
+}
+
+.title {
+  padding-top: 20px;
+}
+
+.book {
+  height: 10px;
+  width: 10px;
+}
+
+#book {
+  padding-left: 60px;
+  height: 160px;
+  width: 110px;
+}
+
+.output {
+	float: left;
+	margin-top: 130px;
+	margin-left: 30px;
+	background: #C4C4C4;
+	height: 400px;
+	width: 500px;
+	border: 2px solid;
+}
+
+.control {
+	float: right;
+	margin-top: 30px;
+	height: 350px;
+	width: 450px;
+}
+
+.compusory {
+	color: red;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.argName {
+	font-family: Sans-serif;
+	color: #ffffff;
+}
+
+#submit {
+	height: 35px;
+	width: 70px;
+	font-size: 14px;
+	background-color: royalblue;
+	color: white;
+}
+
+#console {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	border: 2px groove white;
+	background-color: black;
+	color: white;
+	margin-left: 5px;
+	height: 310px;
+	width: 476px;
+	overflow-y: auto;
+	padding-top: 10px;
+	padding-left: 10px;
+}
