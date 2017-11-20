@@ -77,7 +77,7 @@ typedef struct {
 
 /* functions */
 
-extern int base64_encode(char *in_str, int in_len, char *out_str);
+int base64_encode(char *in_str, int in_len, char *out_str);
 /*
 * Function Name: base64_encode
 * Module: Server
@@ -86,7 +86,7 @@ extern int base64_encode(char *in_str, int in_len, char *out_str);
 * Use: Base64 encode function, used to build connection
 */
 
-extern int readline(char *buff, int pos, char *line);
+int readline(char *buff, int pos, char *line);
 /*
 * Function Name: readline
 * Module: Server
@@ -95,7 +95,7 @@ extern int readline(char *buff, int pos, char *line);
 * Use: read a line string form buffer
 */
 
-extern int shakehands(int sock_client);
+int shakehands(int sock_client);
 /*
 * Function Name: shakehands
 * Module: Server
@@ -104,7 +104,7 @@ extern int shakehands(int sock_client);
 * Use: shakehands with client and build connection
 */
 
-extern void strreverse(char *str, int len);
+void strreverse(char *str, int len);
 /*
 * Function Name: strreverse
 * Module: Server
@@ -113,7 +113,7 @@ extern void strreverse(char *str, int len);
 * Use: reverse string
 */
 
-extern int receive_and_parse(int sock, websocket_head *pWS);
+int receive_and_parse(int sock, websocket_head *pWS);
 /*
 * Function Name: receive_and_parse
 * Module: Server
@@ -122,7 +122,7 @@ extern int receive_and_parse(int sock, websocket_head *pWS);
 * Use: receive message from client and parse it
 */
 
-extern void DecodeMessage(char *data, int len, u_char *mask);
+void DecodeMessage(char *data, int len, u_char *mask);
 /*
 * Function Name: DecodeMessage
 * Module: Server
@@ -131,7 +131,7 @@ extern void DecodeMessage(char *data, int len, u_char *mask);
 * Use: decode message
 */
 
-extern int SendMessage(int fd, char *payload, int payload_length);
+int SendMessage(int fd, char *payload, int payload_length);
 /*
 * Function Name: SendMessage
 * Module: Server
@@ -140,25 +140,35 @@ extern int SendMessage(int fd, char *payload, int payload_length);
 * Use: send message to client
 */
 
-extern void Load_linear_list(linear_list *L);
+void Load_linear_list(Linear_list_main *Main_L);
 /*
 * Function Name: Load_linear_list
 * Module: Server
-* Parameter: Linklist *L
+* Parameter: Linear_list_main *Main_L
 * Return: None
 * Use: load linear list data from file
 */
 
-extern int Save_linear_list(linear_list *L);
+int Save_linear_list(Linear_list_main *Main_L);
 /*
 * Function Name: Save_linear_list
 * Module: Server
-* Parameter: Linklist *L
+* Parameter: Linear_list_main *Main_L
 * Return: int
 * Use: save linear list data into file
 */
 
-extern void Mode_choose(char *playload, int payload_length);
+void Ls_linear_list(Linear_list_main *Main_L, char *payload);
+/*
+* Function Name: Ls_linear_list
+* Module: Server
+* Parameter: Linear_list_main *Main_L, char *payload
+* Return: int
+* Use: ls the linear lists'ID
+*/
+
+
+void Mode_choose(char *playload, int payload_length);
 /*
 * Function Name: Mode_choose
 * Module: Server
@@ -167,7 +177,7 @@ extern void Mode_choose(char *playload, int payload_length);
 * Use: choose a mode
 */
 
-extern void Backstage_Main_linear_list(char *payload, int payload_length);
+void Backstage_Main_linear_list(char *payload, int payload_length);
 /*
 * Function Name: Backstage_Main_linear_list
 * Module: Server

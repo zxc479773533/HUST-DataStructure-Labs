@@ -193,12 +193,22 @@ int SendMessage(int fd, char *payload, int payload_length) {
 }
 
 // load data from file
-void Load_linear_list() {
+void Load_linear_list(Linear_list_main *Main_L) {
 
+    // open file
+    FILE *fp = fopen("/tmp/HUST-DataStructure-Labs/linearlistdb", "rb");
+    if (fp == NULL)
+        return ;
+    
 }
 
 // save data into file
-void Save_linear_list() {
+void Save_linear_list(Linear_list_main *Main_L) {
+
+}
+
+// ls the linear list
+void Ls_linear_list(Linear_list_main *Main_L, char *payload) {
 
 }
 
@@ -231,6 +241,7 @@ void Mode_choose(char *payload, int payload_length) {
   // choose mode
   if (strncmp(payload, "Linearlist", 10) == 0)
     Backstage_Main_linear_list(payload, payload_length);
+
 }
 
 int main(void) {

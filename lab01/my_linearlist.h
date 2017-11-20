@@ -23,13 +23,20 @@
 // the element type in the data structure
 typedef int elem_type;
 
-// the main struct of linklist
+// the main struct of linear list
 typedef struct linear_list {
+	int id;
   elem_type *data;
 	int length;
 	int size;
+	struct linear_list *next;
 } linear_list;
 
+// the struct for managing the linear list
+typedef struct Linear_list_main {
+	int num;
+	linear_list *head;
+} Linear_list_main;
 
 int init_list(linear_list *L);
 /* 

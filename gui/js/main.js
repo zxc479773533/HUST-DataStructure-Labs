@@ -104,6 +104,11 @@ linearListForm.push({
     ],
 });
 
+linearListForm.push({
+    value: 'LsList',
+    args: [],
+});
+
 // create arguments
 function createArguments(arg) {
     
@@ -209,6 +214,7 @@ function makeFuncChoose(val) {
         HTML += '<option value="ListInsert">插入元素</option>';
         HTML += '<option value="ListDelete">删除元素</option>';
         HTML += '<option value="PrintList">遍历并打印表</option>';
+        HTML += '<option value="LsList">列出所有的线性表</option>';
     }
     else if (val == 'Linklist') {
         pass;
