@@ -84,11 +84,11 @@ int list_length(linear_list L) {
   return L.length;
 }
 
-int get_list_item(linear_list L, int order, elem_type *elem) {
+int get_list_item(linear_list L, int order, int *elem) {
 /* 
  * Function Name: get_list_item
  * Module: Data structures
- * Parameter: linear_list L, int order, elem_type *elem
+ * Parameter: linear_list L, int order, int *elem
  * Return: int(status)
  * Use: get the ordered element of link list
  */
@@ -100,11 +100,11 @@ int get_list_item(linear_list L, int order, elem_type *elem) {
   return OK;  
 }
 
-int locate_list_item(linear_list L, elem_type ordered_elem) {
+int locate_list_item(linear_list L, int ordered_elem) {
 /* 
  * Function Name: locate_list_item
  * Module: Data structures
- * Parameter: linear_list L, elem_type ordered_elem
+ * Parameter: linear_list L, int ordered_elem
  * Return: int(index)
  * Use: locate the ordered item
  */
@@ -121,11 +121,11 @@ int locate_list_item(linear_list L, elem_type ordered_elem) {
 }
 
 
-int piror_list_item(linear_list L, elem_type elem, elem_type *elem_pre) {
+int piror_list_item(linear_list L, int elem, int *elem_pre) {
 /* 
  * Function Name: piror_list_item
  * Module: Data structures
- * Parameter: linear_list L, elem_type elem, elem_type *elem_pre
+ * Parameter: linear_list L, int elem, int *elem_pre
  * Return: int(status)
  * Use: get the ordered element's piror
  */
@@ -144,11 +144,11 @@ int piror_list_item(linear_list L, elem_type elem, elem_type *elem_pre) {
 
 }
 
-int next_list_item(linear_list L, elem_type elem, elem_type *elem_next) {
+int next_list_item(linear_list L, int elem, int *elem_next) {
 /* 
  * Function Name: next_list_item
  * Module: Data structures
- * Parameter: linear_list L, elem_type elem, elem_type *elem_next
+ * Parameter: linear_list L, int elem, int *elem_next
  * Return: int(status)
  * Use: get the ordered element's next
  */
@@ -166,18 +166,19 @@ int next_list_item(linear_list L, elem_type elem, elem_type *elem_next) {
     return OK;
 }
 
-int list_insert(linear_list *L, int order, elem_type elem) {
+int list_insert(linear_list *L, int order, int elem) {
 /* 
  * Function Name: list_insert
  * Module: Data structures
- * Parameter: linear_list *L, int order, elem_type elem
+ * Parameter: linear_list *L, int order, int elem
  * Return: int(status)
  * Use: insert a element in the link list
  */
+
   if (order > L->length || order <= 0 || L->length == 0 || L->data == NULL)
     return ERROR;
   if (L->length == L->size) {
-    elem_type *new_base = (elem_type*)realloc(L->data, (L->size + LIST_INCREASEMENT) * sizeof(elem_type));
+    int *new_base = (int*)realloc(L->data, (L->size + LIST_INCREASEMENT) * sizeof(int));
     if (new_base == NULL)
       return ERROR;
     L->data = new_base;
@@ -191,11 +192,11 @@ int list_insert(linear_list *L, int order, elem_type elem) {
   return OK;
 }
 
-int list_delete(linear_list	*L, int order, elem_type elem) {
+int list_delete(linear_list	*L, int order, int *elem) {
 /* 
  * Function Name: list_delete
  * Module: Data structures
- * Parameter: linear_list *L, int order, elem_type elem
+ * Parameter: linear_list *L, int order, int *elem
  * Return: int(status)
  * Use: delete a element in the link list
  */
@@ -203,6 +204,7 @@ int list_delete(linear_list	*L, int order, elem_type elem) {
   if (order > L->length || order <= 0 || order)
     return ERROR;
   int index;
+  *elem = *(L->data + order - 1);
   for (index = order - 1; index < L->length - 1; index++)
     *(L->data + index) = *(L->data + index + 1);
   L->length--;
@@ -221,6 +223,6 @@ void print_list(linear_list L, char *payload) {
   int index;
   for (index = 0; index < L.length; index++) {
     sprintf(payload,"Index: %d, Data: %d\r\n", index + 1, *(L.data + index));
-    payload += sizeof("Index: ") + 2 * sizeof(elem_type) + sizeof(", Data: ") + 2;
+    payload += sizeof("Index: ") + 2 * sizeof(int) + sizeof(", Data: ") + 2;
   }
 }

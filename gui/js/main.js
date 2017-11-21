@@ -83,7 +83,8 @@ linearListForm.push({
     value: 'ListInsert',
     args: [
         'ID',
-        'Index'
+        'Index',
+        'Elem'
     ],
 });
 
@@ -92,7 +93,7 @@ linearListForm.push({
     value: 'ListDelete',
     args: [
         'ID',
-        'Index'
+        'Elem'
     ],
 });
 

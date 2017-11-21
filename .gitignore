@@ -53,3 +53,6 @@ dkms.conf
 
 # myconfigration
 .vscode
+cmake_install.cmake
+CMakeCache.txt
+CMakeFiles

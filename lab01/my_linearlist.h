@@ -20,13 +20,10 @@
 #define LIST_INCREASEMENT 10
 
 
-// the element type in the data structure
-typedef int elem_type;
-
 // the main struct of linear list
 typedef struct linear_list {
 	int id;
-  elem_type *data;
+  int *data;
 	int length;
 	int size;
 	struct linear_list *next;
@@ -88,61 +85,61 @@ int list_length(linear_list L);
  */
 
 
-int get_list_item(linear_list L, int order, elem_type *elem);
+int get_list_item(linear_list L, int order, int *elem);
 /* 
  * Function Name: get_list_item
  * Module: Data structures
- * Parameter: linear_list L, int order, elem_type *elem
+ * Parameter: linear_list L, int order, int *elem
  * Return: int(status)
  * Use: get the ordered element of link list
  */
 
 
-int locate_list_item(linear_list L, elem_type ordered_elem);
+int locate_list_item(linear_list L, int ordered_elem);
 /* 
  * Function Name: locate_list_item
  * Module: Data structures
- * Parameter: linear_list L, elem_type ordered_elem
+ * Parameter: linear_list L, int ordered_elem
  * Return: int(index)
  * Use: locate the ordered item
  */
 
 
-int piror_list_item(linear_list L, elem_type elem, elem_type *elem_pre);
+int piror_list_item(linear_list L, int elem, int *elem_pre);
 /* 
  * Function Name: piror_list_item
  * Module: Data structures
- * Parameter: linear_list L, elem_type elem, elem_type *elem_pre
+ * Parameter: linear_list L, int elem, int *elem_pre
  * Return: int(status)
  * Use: get the ordered element's piror
  */
 
 
-int next_list_item(linear_list L, elem_type elem, elem_type *elem_next);
+int next_list_item(linear_list L, int elem, int *elem_next);
 /* 
  * Function Name: next_list_item
  * Module: Data structures
- * Parameter: linear_list L, elem_type elem, elem_type *elem_next
+ * Parameter: linear_list L, int elem, int *elem_next
  * Return: int(status)
  * Use: get the ordered element's next
  */
 
 
-int list_insert(linear_list *L, int order, elem_type elem);
+int list_insert(linear_list *L, int order, int elem);
 /* 
  * Function Name: list_insert
  * Module: Data structures
- * Parameter: linear_list *L, int order, elem_type elem
+ * Parameter: linear_list *L, int order, int elem
  * Return: int(status)
  * Use: insert a element in the link list
  */
 
 
-int list_delete(linear_list	*L, int order, elem_type elem);
+int list_delete(linear_list	*L, int order, int *elem);
 /* 
  * Function Name: list_delete
  * Module: Data structures
- * Parameter: linear_list *L, int order, elem_type elem
+ * Parameter: linear_list *L, int order, int *elem
  * Return: int(status)
  * Use: delete a element in the link list
  */

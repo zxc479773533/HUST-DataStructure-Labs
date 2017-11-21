@@ -7,6 +7,9 @@
 #ifndef PY_WSSERVER_H_
 #define PY_WSSERVER_H_
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -22,7 +25,7 @@
 #include <openssl/bio.h>
 #include <openssl/evp.h>
 
-#include "lab01/my_linearlist.c"
+#include "../lab01/my_linearlist.c"
 
 
 /* defines */
@@ -31,7 +34,7 @@
 #define QUEUE 20
 
 // the port that server use
-#define PORT 8080
+#define PORT 12345
 
 // the max message size receive from client
 #define BUFF_SIZE 1024
@@ -149,20 +152,20 @@ void Load_linear_list(Linear_list_main *Main_L);
 * Use: load linear list data from file
 */
 
-int Save_linear_list(Linear_list_main *Main_L);
+void Save_linear_list(Linear_list_main *Main_L);
 /*
 * Function Name: Save_linear_list
 * Module: Server
 * Parameter: Linear_list_main *Main_L
-* Return: int
+* Return: None
 * Use: save linear list data into file
 */
 
-void Ls_linear_list(Linear_list_main *Main_L, char *payload);
+void Ls_linear_list(Linear_list_main Main_L, char *payload);
 /*
 * Function Name: Ls_linear_list
 * Module: Server
-* Parameter: Linear_list_main *Main_L, char *payload
+* Parameter: Linear_list_main Main_L, char *payload
 * Return: int
 * Use: ls the linear lists'ID
 */

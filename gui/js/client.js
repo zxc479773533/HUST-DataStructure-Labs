@@ -6,7 +6,7 @@
 */
 
 // creat websocket
-var ws = new WebSocket('ws://localhost:8080');
+var ws = new WebSocket('ws://localhost:12345');
 
 // event when the websocket is opened
 ws.onopen = function (evt) {
