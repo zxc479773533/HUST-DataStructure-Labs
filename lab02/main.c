@@ -10,7 +10,7 @@ void print_menu(void) {
  */
 
   printf("+--------------------------------------------------------------------+\n");
-  printf("|             Welcome to panyue's linear list demo system!             |\n");
+  printf("|             Welcome to panyue's link list demo system!             |\n");
   printf("|               Here are some functions you can call:                |\n");
   printf("|                                                                    |\n");
   printf("|               1: init_list           2: destroy_list               |\n");
@@ -31,32 +31,40 @@ void print_menu(void) {
   printf("Your choose: ");
 }
 
-void load_data(Linear_list_main *Main_L) {
+void load_data(Link_list_main *Main_L) {
 /* 
  * Function Name:  load_data
  * Module: Main control
- * Parameter: Linear_list_main *Main_L
+ * Parameter: Link_list_main *Main_L
  * Return: None
- * Use: load linear list from database
+ * Use: load link list from database
  */
 
   // open file
-  FILE *fp = fopen("linearlistdb", "rb");
+  FILE *fp = fopen("linklistdb", "rb");
   if (fp == NULL)
     return;
 
   int size = 0xff;
   int count = 0;
-  linear_list my_list, *L = &my_list;
+  int index;
+  link_list my_list, *L = &my_list;
   L->next = NULL;
   while (1) {
-    linear_list *tmp_L = (linear_list *)malloc(sizeof(linear_list));
-    size = fread(tmp_L, sizeof(linear_list), 1, fp);
+    link_list *tmp_L = (link_list*)malloc(sizeof(link_list));
+    size = fread(tmp_L, sizeof(link_list), 1, fp);
     if (size == 0)
       break;
+    link_node my_node, *node = &my_node;
+    node->next = NULL;
+    for (index = 0; index < tmp_L->length; index++) {
+      link_node *tmp_node = (link_node*)malloc(sizeof(link_list));
+      fread(tmp_node, sizeof(link_node), 1, fp);
+      node->next = tmp_node;
+      node = node->next;
+    }
     count++;
-    tmp_L->data = (int *)malloc(sizeof(int) * tmp_L->size);
-    size = fread(tmp_L->data, sizeof(int) * tmp_L->size, 1, fp);
+    tmp_L->head = my_node.next;
     L->next = tmp_L;
     L = L->next;
   }
@@ -68,26 +76,32 @@ void load_data(Linear_list_main *Main_L) {
   fclose(fp);
 }
 
-void save_data(Linear_list_main *Main_L) {
+void save_data(Link_list_main *Main_L) {
 /* 
  * Function Name:  save_data
  * Module: Main control
- * Parameter: Linear_list_main *Main_L
+ * Parameter: Link_list_main *Main_L
  * Return: None
- * Use: save linear list from database
+ * Use: save link list from database
  */
 
   // open data files
-  FILE *fp = fopen("linearlistdb", "wb");
+  FILE *fp = fopen("linklistdb", "wb");
   if (fp == NULL)
     return;
 
-  linear_list *L = Main_L->head;
+  link_list *L = Main_L->head;
   while (L != NULL) {
-    fwrite(L, sizeof(linear_list), 1, fp);
-    fwrite(L->data, sizeof(int) * L->size, 1, fp);
+    fwrite(L, sizeof(link_list), 1, fp);
+    link_node *a_node = L->head;
+    int index;
+    for (index = 0; index < L->length; index++) {
+      fwrite(a_node, sizeof(link_node), 1, fp);
+      a_node = a_node->next;
+    }
     L = L->next;
   }
+
 
   // close file
   fclose(fp);
@@ -105,14 +119,14 @@ int main(void) {
     scanf("%d", &function_choose);
 
     // load the data
-    Linear_list_main Main_L;
+    Link_list_main Main_L;
     Main_L.head = NULL;
     Main_L.num = 0;
     load_data(&Main_L);
 
     // some variable to save the parameters
-    int id, order, elem, index;
-    linear_list *L = NULL;
+    int id = 0, order = 0, elem = 0, index = 0;
+    link_list *L = NULL;
 
     switch (function_choose) {
 
@@ -120,9 +134,9 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: init_list\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list *L\n");
+        printf(" * Parameter: link_list *L\n");
         printf(" * Return: int(status)\n");
-        printf(" * Use: initial the linear list\n");
+        printf(" * Use: initial the link list\n");
         printf(" */\n");
         printf("\n");
         printf("Then, enter the list id: ");
@@ -135,19 +149,15 @@ int main(void) {
           L = L->next;
         }
         if (L != NULL) {
-          printf("Inital error, this linear list is already exists!\n");
+          printf("Inital error, this link list is already exists!\n");
         }
         else {
-          linear_list *new_L = (linear_list *)malloc(sizeof(linear_list));
-          if (init_list(new_L) == OK) {
-            printf("Inital list %d succeed!\n", id);
-            new_L->id = id;
-            new_L->next = Main_L.head;
-            Main_L.head = new_L;
-          }
-          else {
-            printf("Inital error, the memory is insufficent!\n");
-          }
+          link_list new_L;
+          init_list(&new_L);
+          printf("Inital list %d succeed!\n", id);
+          new_L.id = id;
+          new_L.next = Main_L.head;
+          Main_L.head = &new_L;
         }
 
       printf("\n");
@@ -157,7 +167,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: destroy_list\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list *L\n");
+        printf(" * Parameter: link_list *L\n");
         printf(" * Return: int(status)\n");
         printf(" * Use: destroy the link list\n");
         printf(" */\n");
@@ -169,7 +179,7 @@ int main(void) {
         if (L->id == id) {
           Main_L.head = Main_L.head->next;
           destroy_list(L);
-          printf("Linear list %d has been deleted!\n", id);
+          printf("Link list %d has been deleted!\n", id);
           printf("\n");
           break;
         }
@@ -181,13 +191,13 @@ int main(void) {
           }
         }
         if (L->next == NULL) {
-          printf("Distroy error, this linear list is not exits!\n");
+          printf("Distroy error, this link list is not exits!\n");
         }
         else {
-          linear_list *to_be_del = L->next;
+          link_list *to_be_del = L->next;
           L->next = L->next->next;
           destroy_list(to_be_del);
-          printf("Linear list %d has been deleted!\n", id);
+          printf("Link list %d has been deleted!\n", id);
         }
         
         printf("\n");
@@ -197,7 +207,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: clear_list\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list *L\n");
+        printf(" * Parameter: link_list *L\n");
         printf(" * Return: int(status)\n");
         printf(" * Use: let the link list empty\n");
         printf(" */\n");
@@ -212,14 +222,14 @@ int main(void) {
           L = L->next;          
         }
         if (L == NULL) {
-          printf("Clear error, this linear list is not exists!\n");
+          printf("Clear error, this link list is not exists!\n");
         }
         else {
           if (clear_list(L) == OK) {
-            printf("Linear list %d has been cleared!\n", id);
+            printf("Link list %d has been cleared!\n", id);
           }
           else {
-            printf("Clear error, this linear is already empty!\n");
+            printf("Clear error, this link is already empty!\n");
           }
         }
 
@@ -230,7 +240,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: is_list_empty\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list L\n");
+        printf(" * Parameter: link_list L\n");
         printf(" * Return: int(true or false)\n");
         printf(" * Use: judge if the link list is empty\n");
         printf(" */\n");
@@ -245,14 +255,14 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
           if (is_list_empty(*L) == TRUE) {
-            printf("Linear list %d is empty!\n", id);
+            printf("Link list %d is empty!\n", id);
           }
           else {
-            printf("Linear list %d is not empty!\n", id);
+            printf("Link list %d is not empty!\n", id);
           }
         }
 
@@ -263,9 +273,9 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: list_length\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list L\n");
+        printf(" * Parameter: link_list L\n");
         printf(" * Return: int(the length)\n");
-        printf(" * Use: get the length of linear list\n");
+        printf(" * Use: get the length of link list\n");
         printf(" */\n");
         printf("\n");
         printf("Then, enter the list id: ");
@@ -278,10 +288,10 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
-          printf("The length of linear list %d is %d.\n", id, list_length(*L));
+          printf("The length of link list %d is %d.\n", id, list_length(*L));
         }
 
         printf("\n");
@@ -291,7 +301,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: get_list_item\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list L, int order, int *elem\n");
+        printf(" * Parameter: link_list L, int order, int *elem\n");
         printf(" * Return: int(status)\n");
         printf(" * Use: get the ordered element of link list\n");
         printf(" */\n");
@@ -307,7 +317,7 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
           if (get_list_item(*L, order, &elem) == OK) {
@@ -325,7 +335,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: locate_list_item\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list L, int ordered_elem\n");
+        printf(" * Parameter: link_list L, int ordered_elem\n");
         printf(" * Return: int(index)\n");
         printf(" * Use: get the index of ordered item\n");
         printf(" */\n");
@@ -341,7 +351,7 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
           index = locate_list_item(*L, elem);
@@ -355,7 +365,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: piror_list_item\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list L, int elem, int *elem_pre\n");
+        printf(" * Parameter: link_list L, int elem, int *elem_pre\n");
         printf(" * Return: int(status)\n");
         printf(" * Use: get the ordered element's piror\n");
         printf(" */\n");
@@ -371,7 +381,7 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
           int elem_pre;
@@ -390,7 +400,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: next_list_item\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list L, int elem, int *elem_next\n");
+        printf(" * Parameter: link_list L, int elem, int *elem_next\n");
         printf(" * Return: int(status)\n");
         printf(" * Use: get the ordered element's next\n");
         printf(" */\n");
@@ -406,7 +416,7 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
           int elem_next;
@@ -425,7 +435,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: list_insert\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list *L, int order, int elem\n");
+        printf(" * Parameter: link_list *L, int order, int elem\n");
         printf(" * Return: int(status)\n");
         printf(" * Use: insert a element in the link list\n");
         printf(" */\n");
@@ -441,7 +451,7 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
           if (list_insert(L, order, elem) == OK) {
@@ -459,7 +469,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: list_delete\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list *L, int order, int *elem\n");
+        printf(" * Parameter: link_list *L, int order, int *elem\n");
         printf(" * Return: int(status)\n");
         printf(" * Use: delete a element in the link list\n");
         printf(" */\n");
@@ -475,7 +485,7 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
           if (list_delete(L, order, &elem) == OK) {
@@ -493,7 +503,7 @@ int main(void) {
         printf("/*\n");
         printf(" * Function Name: print_list\n");
         printf(" * Module: Data structures\n");
-        printf(" * Parameter: linear_list L, char *payload\n");
+        printf(" * Parameter: link_list L, char *payload\n");
         printf(" * Return: None\n");
         printf(" * Use: print the elements of the linklist to the payload\n");
         printf(" */\n");
@@ -508,10 +518,10 @@ int main(void) {
           L = L->next;
         }
         if (L == NULL) {
-          printf("Error, this linear list is not exists!\n");
+          printf("Error, this link list is not exists!\n");
         }
         else {
-          printf("The elements in linear list %d are:\n", id);
+          printf("The elements in link list %d are:\n", id);
           print_list(*L);
         }
 

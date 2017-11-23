@@ -4,11 +4,12 @@
  * E-MAIL: zxc479773533@gmail.com
  */
 
-#ifndef LINKLIST_H
-#define LINKLIST_H
+#ifndef PY_LINKLIST_H
+#define PY_LINKLIST_H
 
-// whether using chain storage structure
-#define USING_CHAIN
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -16,125 +17,144 @@
 #define OK 0
 #define ERROR 1
 
-// some defination for ordered storage structure
-#define LIST_INIT_SIZE 100
-#define LIST_INCREASEMENT 10
-
-// the element type in the data structure
-typedef int elem_type;
-
-// the structure of link node using chain storage structure
+// the struct of link node
 typedef struct link_node {
-	elem_type data;
+	int data;
 	struct link_node *next;
 } link_node;
 
-// the main struct of linklist
+// the main struct of link list
 typedef struct link_list {
-#ifdef USING_CHAIN
+	int id;
 	int length;
-  link_node *head;
-#else
-  elem_type *data;
-	int length;
-	int size;
-#endif
+	struct link_node *head;
+	struct link_list *next;
 } link_list;
 
+// the struct for managing the link list
+typedef struct Link_list_main {
+	int num;
+	link_list *head;
+} Link_list_main;
 
 int init_list(link_list *L);
 /* 
- * Func: initial the link list
- * Args: link list
- * Ret: the status
+ * Function Name: init_list
+ * Module: Data structures
+ * Parameter: link_list *L
+ * Return: int(status)
+ * Use: initial the link list
  */
 
 
 int destroy_list(link_list *L);
 /* 
- * Func: destroy the link list
- * Args: link list
- * Ret: the status
+ * Function Name: destroy_list
+ * Module: Data structures
+ * Parameter: link_list *L
+ * Return: int(status)
+ * Use: destroy the link list
  */
 
 
 int clear_list(link_list *L);
 /* 
- * Func: let the link list empty
- * Args: link list
- * Ret: the status
+ * Function Name: clear_list
+ * Module: Data structures
+ * Parameter: link_list *L
+ * Return: int(status)
+ * Use: let the link list empty
  */
 
 
 int is_list_empty(link_list L);
 /* 
- * Func: judge if the link list is empty
- * Args: link list
- * Ret: true or false
+ * Function Name: is_list_empty
+ * Module: Data structures
+ * Parameter: link_list L
+ * Return: int(true or false)
+ * Use: judge if the link list is empty
  */
 
 
 int list_length(link_list L);
 /* 
- * Func: get the length of link list
- * Args: link list
- * Ret: the length
+ * Function Name: list_length
+ * Module: Data structures
+ * Parameter: link_list L
+ * Return: int(the length)
+ * Use: get the length of link list
  */
 
 
-int get_list_item(link_list L, int order, elem_type *elem);
+int get_list_item(link_list L, int order, int *elem);
 /* 
- * Func: get the ordered element of link list
- * Args: link list, the order, the target element
- * Ret: the status
+ * Function Name: get_list_item
+ * Module: Data structures
+ * Parameter: link_list L, int order, int *elem
+ * Return: int(status)
+ * Use: get the ordered element of link list
  */
 
 
-int locate_list_item(link_list L, elem_type ordered_elem);
+int locate_list_item(link_list L, int ordered_elem);
 /* 
- * Func: locate the ordered item
- * Args: link list, the ordered element
- * Ret: the index of the element
+ * Function Name: locate_list_item
+ * Module: Data structures
+ * Parameter: link_list L, int ordered_elem
+ * Return: int(index)
+ * Use: get the index of ordered item
  */
 
 
-int piror_list_item(link_list L, elem_type elem, elem_type *elem_pre);
+int piror_list_item(link_list L, int elem, int *elem_pir);
 /* 
- * Func: get the ordered element's piror
- * Args: link list, the order, the target element
- * Ret: the status
+ * Function Name: piror_list_item
+ * Module: Data structures
+ * Parameter: link_list L, int elem, int *elem_pir
+ * Return: int(status)
+ * Use: get the ordered element's piror
  */
 
 
-
-int next_list_item(link_list L, elem_type elem, elem_type *elem_next);
+int next_list_item(link_list L, int elem, int *elem_next);
 /* 
- * Func: get the ordered element's next
- * Args: link list, the order, the target element
- * Ret: the status
+ * Function Name: next_list_item
+ * Module: Data structures
+ * Parameter: link_list L, int elem, int *elem_next
+ * Return: int(status)
+ * Use: get the ordered element's next
  */
 
 
-int list_insert(link_list *L, int order, elem_type elem);
+int list_insert(link_list *L, int order, int elem);
 /* 
- * Func: insert a element in the link list
- * Args: link list, the order, the target element
- * Ret: the status
+ * Function Name: list_insert
+ * Module: Data structures
+ * Parameter: link_list *L, int order, int elem
+ * Return: int(status)
+ * Use: insert a element in the link list
  */
 
 
-int list_delete(link_list	*L, int order, elem_type elem);
+int list_delete(link_list	*L, int order, int *elem);
 /* 
- * Func: delete a element in the link list
- * Args: link list, the order, the target element
- * Ret: the status
+ * Function Name: list_delete
+ * Module: Data structures
+ * Parameter: link_list *L, int order, int *elem
+ * Return: int(status)
+ * Use: delete a element in the link list
  */
+
 
 void print_list(link_list L);
 /* 
- * Func: print the elements of the linklist
- * Args: link list
- * Ret: none
+ * Function Name: print_list
+ * Module: Data structures
+ * Parameter: link_list L
+ * Return: None
+ * Use: print the elements of the linklist to the payload
  */
 
-#endif // !LINKLIST_H
+
+#endif // !PY_LINKLIST_H
