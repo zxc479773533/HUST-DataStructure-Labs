@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -81,7 +82,7 @@ int list_length(linear_list L);
  * Module: Data structures
  * Parameter: linear_list L
  * Return: int(the length)
- * Use: get the length of link list
+ * Use: get the length of linear list
  */
 
 
@@ -101,7 +102,7 @@ int locate_list_item(linear_list L, int ordered_elem);
  * Module: Data structures
  * Parameter: linear_list L, int ordered_elem
  * Return: int(index)
- * Use: locate the ordered item
+ * Use: get the index of ordered item
  */
 
 
@@ -145,12 +146,12 @@ int list_delete(linear_list	*L, int order, int *elem);
  */
 
 
-void print_list(linear_list L, char *payload);
+void print_list(linear_list L);
 /* 
  * Function Name: print_list
  * Module: Data structures
- * Parameter: linear_list L, char *payload
- * Return: int(status)
+ * Parameter: linear_list L
+ * Return: None
  * Use: print the elements of the linklist to the payload
  */
 

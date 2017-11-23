@@ -175,7 +175,7 @@ int list_insert(linear_list *L, int order, int elem) {
  * Use: insert a element in the link list
  */
 
-  if (order > L->length || order <= 0 || L->length == 0 || L->data == NULL)
+  if (order > L->size || order <= 0 || L->size == 0 || L->data == NULL)
     return ERROR;
   if (L->length == L->size) {
     int *new_base = (int*)realloc(L->data, (L->size + LIST_INCREASEMENT) * sizeof(int));
@@ -201,7 +201,7 @@ int list_delete(linear_list	*L, int order, int *elem) {
  * Use: delete a element in the link list
  */
 
-  if (order > L->length || order <= 0 || order)
+  if (order > L->length || order <= 0 || L->size == 0 || L->data == NULL)
     return ERROR;
   int index;
   *elem = *(L->data + order - 1);
@@ -211,18 +211,17 @@ int list_delete(linear_list	*L, int order, int *elem) {
   return OK;
 }
 
-void print_list(linear_list L, char *payload) {
+void print_list(linear_list L) {
 /* 
  * Function Name: print_list
  * Module: Data structures
- * Parameter: linear_list L, char *payload
+ * Parameter: linear_list L
  * Return: int(status)
  * Use: print the elements of the linklist to the payload
  */
 
   int index;
   for (index = 0; index < L.length; index++) {
-    sprintf(payload,"Index: %d, Data: %d\r\n", index + 1, *(L.data + index));
-    payload += sizeof("Index: ") + 2 * sizeof(int) + sizeof(", Data: ") + 2;
+    printf("Index: %d, Data: %d\n", index + 1, *(L.data + index));
   }
 }

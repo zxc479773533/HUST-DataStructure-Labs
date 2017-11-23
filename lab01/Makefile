@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs
+CMAKE_SOURCE_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs
+CMAKE_BINARY_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/CMakeFiles /home/panyue/code/my_github/HUST-DataStructure-Labs/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01/CMakeFiles /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,84 +111,84 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named linearlist
+# Target rules for targets named linear_list
 
 # Build rule for target.
-linearlist: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 linearlist
-.PHONY : linearlist
+linear_list: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 linear_list
+.PHONY : linear_list
 
 # fast build rule for target.
-linearlist/fast:
-	$(MAKE) -f CMakeFiles/linearlist.dir/build.make CMakeFiles/linearlist.dir/build
-.PHONY : linearlist/fast
+linear_list/fast:
+	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/build
+.PHONY : linear_list/fast
 
 #=============================================================================
-# Target rules for targets named wsserver
+# Target rules for targets named lab01
 
 # Build rule for target.
-wsserver: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 wsserver
-.PHONY : wsserver
+lab01: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lab01
+.PHONY : lab01
 
 # fast build rule for target.
-wsserver/fast:
-	$(MAKE) -f CMakeFiles/wsserver.dir/build.make CMakeFiles/wsserver.dir/build
-.PHONY : wsserver/fast
+lab01/fast:
+	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/build
+.PHONY : lab01/fast
 
-lab01/my_linearlist.o: lab01/my_linearlist.c.o
+main.o: main.c.o
 
-.PHONY : lab01/my_linearlist.o
-
-# target to build an object file
-lab01/my_linearlist.c.o:
-	$(MAKE) -f CMakeFiles/linearlist.dir/build.make CMakeFiles/linearlist.dir/lab01/my_linearlist.c.o
-.PHONY : lab01/my_linearlist.c.o
-
-lab01/my_linearlist.i: lab01/my_linearlist.c.i
-
-.PHONY : lab01/my_linearlist.i
-
-# target to preprocess a source file
-lab01/my_linearlist.c.i:
-	$(MAKE) -f CMakeFiles/linearlist.dir/build.make CMakeFiles/linearlist.dir/lab01/my_linearlist.c.i
-.PHONY : lab01/my_linearlist.c.i
-
-lab01/my_linearlist.s: lab01/my_linearlist.c.s
-
-.PHONY : lab01/my_linearlist.s
-
-# target to generate assembly for a file
-lab01/my_linearlist.c.s:
-	$(MAKE) -f CMakeFiles/linearlist.dir/build.make CMakeFiles/linearlist.dir/lab01/my_linearlist.c.s
-.PHONY : lab01/my_linearlist.c.s
-
-server/wsserver.o: server/wsserver.c.o
-
-.PHONY : server/wsserver.o
+.PHONY : main.o
 
 # target to build an object file
-server/wsserver.c.o:
-	$(MAKE) -f CMakeFiles/wsserver.dir/build.make CMakeFiles/wsserver.dir/server/wsserver.c.o
-.PHONY : server/wsserver.c.o
+main.c.o:
+	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/main.c.o
+.PHONY : main.c.o
 
-server/wsserver.i: server/wsserver.c.i
+main.i: main.c.i
 
-.PHONY : server/wsserver.i
+.PHONY : main.i
 
 # target to preprocess a source file
-server/wsserver.c.i:
-	$(MAKE) -f CMakeFiles/wsserver.dir/build.make CMakeFiles/wsserver.dir/server/wsserver.c.i
-.PHONY : server/wsserver.c.i
+main.c.i:
+	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/main.c.i
+.PHONY : main.c.i
 
-server/wsserver.s: server/wsserver.c.s
+main.s: main.c.s
 
-.PHONY : server/wsserver.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-server/wsserver.c.s:
-	$(MAKE) -f CMakeFiles/wsserver.dir/build.make CMakeFiles/wsserver.dir/server/wsserver.c.s
-.PHONY : server/wsserver.c.s
+main.c.s:
+	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/main.c.s
+.PHONY : main.c.s
+
+my_linearlist.o: my_linearlist.c.o
+
+.PHONY : my_linearlist.o
+
+# target to build an object file
+my_linearlist.c.o:
+	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/my_linearlist.c.o
+.PHONY : my_linearlist.c.o
+
+my_linearlist.i: my_linearlist.c.i
+
+.PHONY : my_linearlist.i
+
+# target to preprocess a source file
+my_linearlist.c.i:
+	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/my_linearlist.c.i
+.PHONY : my_linearlist.c.i
+
+my_linearlist.s: my_linearlist.c.s
+
+.PHONY : my_linearlist.s
+
+# target to generate assembly for a file
+my_linearlist.c.s:
+	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/my_linearlist.c.s
+.PHONY : my_linearlist.c.s
 
 # Help Target
 help:
@@ -197,15 +197,15 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... linear_list"
 	@echo "... edit_cache"
-	@echo "... linearlist"
-	@echo "... wsserver"
-	@echo "... lab01/my_linearlist.o"
-	@echo "... lab01/my_linearlist.i"
-	@echo "... lab01/my_linearlist.s"
-	@echo "... server/wsserver.o"
-	@echo "... server/wsserver.i"
-	@echo "... server/wsserver.s"
+	@echo "... lab01"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
+	@echo "... my_linearlist.o"
+	@echo "... my_linearlist.i"
+	@echo "... my_linearlist.s"
 .PHONY : help
 
 
