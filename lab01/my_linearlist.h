@@ -36,6 +36,7 @@ typedef struct Linear_list_main {
 	linear_list *head;
 } Linear_list_main;
 
+
 int init_list(linear_list *L);
 /* 
  * Function Name: init_list

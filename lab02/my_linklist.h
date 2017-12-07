@@ -17,6 +17,7 @@
 #define OK 0
 #define ERROR 1
 
+
 // the struct of link node
 typedef struct link_node {
 	int data;
@@ -36,6 +37,7 @@ typedef struct Link_list_main {
 	int num;
 	link_list *head;
 } Link_list_main;
+
 
 int init_list(link_list *L);
 /* 
