@@ -181,11 +181,11 @@ binary_tree_node* bitree_right_sibling(binary_tree T, int key);
  */
 
 
-int bitree_insert_node(binary_tree *T, int ordered_key, int tag, char *value);
+int bitree_insert_node(binary_tree *T, int ordered_key, int tag, int key, char *value);
 /* 
  * Function Name: bitree_insert_node
  * Module: Data structures
- * Parameter: binary_tree *T, int ordered_key, int tag, char *value
+ * Parameter: binary_tree *T, int ordered_key, int tag, int key, char *value
  * Return: int(status)
  * Use: insert a node in a binary tree
  */
