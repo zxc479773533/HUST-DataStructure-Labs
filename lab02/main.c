@@ -145,7 +145,7 @@ int main(void) {
         L = Main_L.head;
         while (L != NULL) {
           if (L->id == id)
-          break;
+            break;
           L = L->next;
         }
         if (L != NULL) {
@@ -160,8 +160,8 @@ int main(void) {
           Main_L.head = &new_L;
         }
 
-      printf("\n");
-      break;
+        printf("\n");
+        break;
 
       case 2:
         printf("/*\n");

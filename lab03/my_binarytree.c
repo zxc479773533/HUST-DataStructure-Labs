@@ -5,7 +5,7 @@
  */
 
 #include "my_binarytree.h"
-#include "mylibqueue.h"
+#include "mylibqueue.c"
 
 int init_binary_tree(binary_tree *T) {
 /* 
@@ -24,6 +24,8 @@ int init_binary_tree(binary_tree *T) {
 
 // assist function to free all nodes
 void free_nodes(binary_tree_node *node) {
+  if (node == NULL)
+    return ;
   if (node->left_child != NULL)
     free_nodes(node->left_child);
   if (node->right_child != NULL)
@@ -75,6 +77,8 @@ int create_bitree(binary_tree *T, int node_num) {
   int index = 1;
   int count = 1;
   int safe_tag = 1;
+  T->size = 0;
+  T->depth = 0;
   while (count <= node_num) {
     count *= 2;
     T->depth++;
@@ -93,6 +97,8 @@ int create_bitree(binary_tree *T, int node_num) {
 
 // assist func to clear nodes
 binary_tree_node* clear_nodes(binary_tree_node* node) {
+  if (node == NULL)
+    return NULL;
   memset(node->value, 0, 256);
   if (node->left_child != NULL)
     node->left_child = clear_nodes(node->left_child);
@@ -113,6 +119,7 @@ int clear_bitree(binary_tree *T) {
   T->size = 0;
   T->depth = 0;
   T->root = clear_nodes(T->root);
+  return OK;
 }
 
 int is_bitree_empty(binary_tree T) {
@@ -124,7 +131,10 @@ int is_bitree_empty(binary_tree T) {
  * Use: judge if the binary tree is empty
  */
 
-  return T.size;
+  if (T.size == 0)
+    return TRUE;
+  else
+    return FALSE;
 }
 
 int bitree_depth(binary_tree T) {
@@ -132,7 +142,7 @@ int bitree_depth(binary_tree T) {
  * Function Name: bitree_depth
  * Module: Data structures
  * Parameter: binary_tree T
- * Return: int(status)
+ * Return: int(the depth)
  * Use: get the depth of binary tree
  */
 
@@ -179,14 +189,16 @@ int bitree_get_value(binary_tree T, int key, char *value) {
 }
 
 // assist function to set value of a node
-void set_value(binary_tree_node *node, int key, char *value) {
+void set_value(binary_tree_node *node, int key, char *value, int *safe_tag) {
   if (node == NULL)
     return ;
-  if (node->key == key)
+  if (node->key == key) {
     strcpy(node->value, value);
+    *safe_tag = 1;
+  }
   else {
-    set_value(node->left_child, key, value);
-    set_value(node->right_child, key,  value);
+    set_value(node->left_child, key, value, safe_tag);
+    set_value(node->right_child, key,  value, safe_tag);
   }
 }
 
@@ -199,8 +211,12 @@ int bitree_set_value(binary_tree *T, int key, char *value) {
  * Use: set the value of a node
  */
 
-  set_value(T->root, key, value);
-  return OK;
+  int safe_tag = 0;
+  set_value(T->root, key, value, &safe_tag);
+  if (safe_tag == 1)
+    return OK;
+  else
+    return ERROR;
 }
 
 // assist function to get parent

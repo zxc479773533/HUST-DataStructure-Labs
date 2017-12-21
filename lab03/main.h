@@ -22,21 +22,21 @@ void print_menu(void);
  */
 
 
-void load_data(Binary_tree_main *Main_L);
+void load_data(Binary_tree_main *Main_T);
 /* 
  * Function Name:  load_data
  * Module: Main control
- * Parameter: Binary_tree_main *Main_L
+ * Parameter: Binary_tree_main *Main_T
  * Return: None
  * Use: load link list from database
  */
 
 
-void save_data(Binary_tree_main *Main_L);
+void save_data(Binary_tree_main *Main_T);
 /* 
  * Function Name:  save_data
  * Module: Main control
- * Parameter: Binary_tree_main *Main_L
+ * Parameter: Binary_tree_main *Main_T
  * Return: None
  * Use: save link list from database
  */

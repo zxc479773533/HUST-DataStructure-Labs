@@ -22,8 +22,8 @@ typedef struct binary_tree_node {
   int id;
   int key;
   char value[256];
-  binary_tree_node *left_child;
-  binary_tree_node *right_child;
+  struct binary_tree_node *left_child;
+  struct binary_tree_node *right_child;
 } binary_tree_node;
 
 // the main struct of binary tree
@@ -31,8 +31,8 @@ typedef struct binary_tree {
   int id;
   int size;
   int depth;
-  binary_tree_node *root;
-  binary_tree *next;
+  struct binary_tree_node *root;
+  struct binary_tree *next;
 } binary_tree;
 
 // the struct for managin the binary tree
@@ -86,7 +86,7 @@ int is_bitree_empty(binary_tree T);
  * Function Name: is_bitree_empty
  * Module: Data structures
  * Parameter: binary_tree T
- * Return: int(tree or false)
+ * Return: int(true or false)
  * Use: judge if the binary tree is empty
  */
 
@@ -96,7 +96,7 @@ int bitree_depth(binary_tree T);
  * Function Name: bitree_depth
  * Module: Data structures
  * Parameter: binary_tree T
- * Return: int(status)
+ * Return: int(the depth)
  * Use: get the depth of binary tree
  */
 
@@ -205,7 +205,7 @@ int bitree_delete_child_tree(binary_tree *T, int ordered_key, int tag);
 /* 
  * Function Name: bitree_delete_child_tree
  * Module: Data structures
- * Parameter: binary_tree *T, int ordered_key, int tag, binary_tree *C
+ * Parameter: binary_tree *T, int ordered_key, int tag
  * Return: int(status)
  * Use: delete a child tree in a binary tree
  */

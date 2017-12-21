@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01
+CMAKE_SOURCE_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01
+CMAKE_BINARY_DIR = /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01/CMakeFiles /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/CMakeFiles /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/lab01/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,84 +111,88 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named linear_list
+# Target rules for targets named lab03
 
 # Build rule for target.
-linear_list: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 linear_list
-.PHONY : linear_list
+lab03: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 lab03
+.PHONY : lab03
 
 # fast build rule for target.
-linear_list/fast:
-	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/build
-.PHONY : linear_list/fast
+lab03/fast:
+	$(MAKE) -f CMakeFiles/lab03.dir/build.make CMakeFiles/lab03.dir/build
+.PHONY : lab03/fast
 
 #=============================================================================
-# Target rules for targets named lab01
+# Target rules for targets named binary_tree
 
 # Build rule for target.
-lab01: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 lab01
-.PHONY : lab01
+binary_tree: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 binary_tree
+.PHONY : binary_tree
 
 # fast build rule for target.
-lab01/fast:
-	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/build
-.PHONY : lab01/fast
+binary_tree/fast:
+	$(MAKE) -f CMakeFiles/binary_tree.dir/build.make CMakeFiles/binary_tree.dir/build
+.PHONY : binary_tree/fast
 
-main.o: main.c.o
+#=============================================================================
+# Target rules for targets named libqueue
 
+# Build rule for target.
+libqueue: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 libqueue
+.PHONY : libqueue
+
+# fast build rule for target.
+libqueue/fast:
+	$(MAKE) -f CMakeFiles/libqueue.dir/build.make CMakeFiles/libqueue.dir/build
+.PHONY : libqueue/fast
+
+# target to build an object file
+main.o:
+	$(MAKE) -f CMakeFiles/lab03.dir/build.make CMakeFiles/lab03.dir/main.o
 .PHONY : main.o
 
-# target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/main.c.o
-.PHONY : main.c.o
-
-main.i: main.c.i
-
+# target to preprocess a source file
+main.i:
+	$(MAKE) -f CMakeFiles/lab03.dir/build.make CMakeFiles/lab03.dir/main.i
 .PHONY : main.i
 
-# target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/main.c.i
-.PHONY : main.c.i
-
-main.s: main.c.s
-
+# target to generate assembly for a file
+main.s:
+	$(MAKE) -f CMakeFiles/lab03.dir/build.make CMakeFiles/lab03.dir/main.s
 .PHONY : main.s
 
-# target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/lab01.dir/build.make CMakeFiles/lab01.dir/main.c.s
-.PHONY : main.c.s
-
-my_linearlist.o: my_linearlist.c.o
-
-.PHONY : my_linearlist.o
-
 # target to build an object file
-my_linearlist.c.o:
-	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/my_linearlist.c.o
-.PHONY : my_linearlist.c.o
-
-my_linearlist.i: my_linearlist.c.i
-
-.PHONY : my_linearlist.i
+my_binarytree.o:
+	$(MAKE) -f CMakeFiles/binary_tree.dir/build.make CMakeFiles/binary_tree.dir/my_binarytree.o
+.PHONY : my_binarytree.o
 
 # target to preprocess a source file
-my_linearlist.c.i:
-	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/my_linearlist.c.i
-.PHONY : my_linearlist.c.i
-
-my_linearlist.s: my_linearlist.c.s
-
-.PHONY : my_linearlist.s
+my_binarytree.i:
+	$(MAKE) -f CMakeFiles/binary_tree.dir/build.make CMakeFiles/binary_tree.dir/my_binarytree.i
+.PHONY : my_binarytree.i
 
 # target to generate assembly for a file
-my_linearlist.c.s:
-	$(MAKE) -f CMakeFiles/linear_list.dir/build.make CMakeFiles/linear_list.dir/my_linearlist.c.s
-.PHONY : my_linearlist.c.s
+my_binarytree.s:
+	$(MAKE) -f CMakeFiles/binary_tree.dir/build.make CMakeFiles/binary_tree.dir/my_binarytree.s
+.PHONY : my_binarytree.s
+
+# target to build an object file
+mylibqueue.o:
+	$(MAKE) -f CMakeFiles/libqueue.dir/build.make CMakeFiles/libqueue.dir/mylibqueue.o
+.PHONY : mylibqueue.o
+
+# target to preprocess a source file
+mylibqueue.i:
+	$(MAKE) -f CMakeFiles/libqueue.dir/build.make CMakeFiles/libqueue.dir/mylibqueue.i
+.PHONY : mylibqueue.i
+
+# target to generate assembly for a file
+mylibqueue.s:
+	$(MAKE) -f CMakeFiles/libqueue.dir/build.make CMakeFiles/libqueue.dir/mylibqueue.s
+.PHONY : mylibqueue.s
 
 # Help Target
 help:
@@ -197,15 +201,19 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... linear_list"
+	@echo "... lab03"
+	@echo "... binary_tree"
 	@echo "... edit_cache"
-	@echo "... lab01"
+	@echo "... libqueue"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... my_linearlist.o"
-	@echo "... my_linearlist.i"
-	@echo "... my_linearlist.s"
+	@echo "... my_binarytree.o"
+	@echo "... my_binarytree.i"
+	@echo "... my_binarytree.s"
+	@echo "... mylibqueue.o"
+	@echo "... mylibqueue.i"
+	@echo "... mylibqueue.s"
 .PHONY : help
 
 

@@ -1,0 +1,17 @@
+[
+{
+  "directory": "/home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/build",
+  "command": "/usr/bin/cc   -g   -o CMakeFiles/lab03.dir/main.c.o   -c /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/main.c",
+  "file": "/home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/main.c"
+},
+{
+  "directory": "/home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/build",
+  "command": "/usr/bin/cc   -g   -o CMakeFiles/binary_tree.dir/my_binarytree.c.o   -c /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/my_binarytree.c",
+  "file": "/home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/my_binarytree.c"
+},
+{
+  "directory": "/home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/build",
+  "command": "/usr/bin/cc   -g   -o CMakeFiles/libqueue.dir/mylibqueue.c.o   -c /home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/mylibqueue.c",
+  "file": "/home/panyue/code/my_github/HUST-DataStructure-Labs/lab03/mylibqueue.c"
+}
+]
