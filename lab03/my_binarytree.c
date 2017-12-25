@@ -7,6 +7,16 @@
 #include "my_binarytree.h"
 #include "mylibqueue.c"
 
+// assist fuction to search array
+int search_array(int *array, int size, int target){
+  int i;
+  for(i = 0; i < size; i++) {
+    if(array[i] == target)
+      return i;
+  }
+  return -1;
+}
+
 int init_binary_tree(binary_tree *T) {
 /* 
  * Function Name: init_binary_tree
@@ -17,7 +27,6 @@ int init_binary_tree(binary_tree *T) {
  */
 
   T->size = 0;
-  T->depth = 0;
   T->root = NULL;
   return OK;
 }
@@ -26,10 +35,13 @@ int init_binary_tree(binary_tree *T) {
 void free_nodes(binary_tree_node *node) {
   if (node == NULL)
     return ;
+  // free left child
   if (node->left_child != NULL)
     free_nodes(node->left_child);
+  // free right child
   if (node->right_child != NULL)
     free_nodes(node->right_child);
+  // free self
   free(node);
 }
 
@@ -47,64 +59,45 @@ int destroy_bitree(binary_tree *T){
   return OK;
 }
 
-// assist function to creat nodes
-binary_tree_node* creat_nodes(int index, int node_num, int *safe_tag) {
-  binary_tree_node* node = (binary_tree_node*)malloc(sizeof(binary_tree_node));
-  if (node == NULL)
-    *safe_tag = 0;
-  node->id = index;
-  node->key = index;
-  node->left_child = NULL;
-  node->right_child = NULL;
-  if (index * 2 <= node_num)
-    node->left_child = creat_nodes(index * 2, node_num, safe_tag);
-  if (index * 2 + 1 <= node_num)
-    node->right_child = creat_nodes(index * 2 + 1, node_num, safe_tag);
-  return node;
+// assist function to create nodes
+binary_tree_node *create_nodes(int *ind1, int *def1, int *ind2, int *def2, int max_pos, int min_pos, int *pos) {
+  // start
+  if (pos == NULL) {
+    int new_pos = 0;
+    return create_nodes(ind1, def1, ind2, def2, max_pos, min_pos, &new_pos);
+  }
+  // get root pos in inorder defination
+  int root_pos = search_array(def2 + min_pos, max_pos - min_pos, def1[*pos]);
+  if (root_pos == -1)
+    return NULL;
+  else
+    root_pos += min_pos;
+  // create a node
+  binary_tree_node *root = (binary_tree_node*)malloc(sizeof(binary_tree_node));
+  root->index = ind1[*pos];
+  root->value = def1[*pos];
+  (*pos)++;
+  // the left of root in preorder defination is the left child tree
+  root->left_child = create_nodes(ind1, def1, ind2, def2, root_pos, min_pos, pos);
+  // the right of root in preorder defination is the right child tree
+  root->right_child = create_nodes(ind1, def1, ind2, def2, max_pos, root_pos + 1, pos);
+  return root;
 }
 
-int create_bitree(binary_tree *T, int node_num) {
+int create_bitree(binary_tree *T, int *pre_index, int *pre_defination, int *in_index, int *in_defination, int difination_len) {
 /* 
  * Function Name: create_bitree
  * Module: Data structures
- * Parameter: binary_tree *T, int node_num
+ * Parameter: binary_tree *T, int *pre_index, int *pre_defination, int *in_index, int *in_defination, int difination_len
  * Return: int(status)
  * Use: create the binary tree with some nodes
  */
 
-  if (node_num <= 0)
+  if (difination_len <= 0)
     return ERROR;
-  int index = 1;
-  int count = 1;
-  int safe_tag = 1;
-  T->size = 0;
-  T->depth = 0;
-  while (count <= node_num) {
-    count *= 2;
-    T->depth++;
-  }
-  T->size = node_num;
-  T->root = creat_nodes(index, node_num, &safe_tag);
-  if (safe_tag == 0) {
-    free_nodes(T->root);
-    T->size = 0;
-    T->depth = 0;
-    return ERROR;
-  }
-  else
-    return OK;
-}
-
-// assist func to clear nodes
-binary_tree_node* clear_nodes(binary_tree_node* node) {
-  if (node == NULL)
-    return NULL;
-  memset(node->value, 0, 256);
-  if (node->left_child != NULL)
-    node->left_child = clear_nodes(node->left_child);
-  if (node->right_child != NULL)
-    node->right_child = clear_nodes(node->right_child);
-  return node;
+  T->size = difination_len;
+  T->root = create_nodes(pre_index, pre_defination, in_index, in_defination, difination_len, 0, NULL);
+  return OK;
 }
 
 int clear_bitree(binary_tree *T) {
@@ -117,8 +110,8 @@ int clear_bitree(binary_tree *T) {
  */
 
   T->size = 0;
-  T->depth = 0;
-  T->root = clear_nodes(T->root);
+  free_nodes(T->root);
+  T->root = NULL;
   return OK;
 }
 
@@ -137,6 +130,18 @@ int is_bitree_empty(binary_tree T) {
     return FALSE;
 }
 
+// assist function to get depth
+int get_depth(binary_tree_node *node, int depth) {
+  if (node == NULL)
+    return depth;
+  // count left depth
+  int left_depth = get_depth(node->left_child, depth + 1);
+  // count right depth
+  int right_depth = get_depth(node->right_child, depth + 1);
+  // return the bigger of left and right depth
+  return left_depth > right_depth ? left_depth : right_depth;
+}
+
 int bitree_depth(binary_tree T) {
 /* 
  * Function Name: bitree_depth
@@ -146,7 +151,7 @@ int bitree_depth(binary_tree T) {
  * Use: get the depth of binary tree
  */
 
-  return T.depth;
+  return get_depth(T.root, 0);
 }
 
 binary_tree_node* bitree_root(binary_tree T) {
@@ -161,58 +166,62 @@ binary_tree_node* bitree_root(binary_tree T) {
 }
 
 // assist function to get value of a node
-void get_value(binary_tree_node* node, int key, char *value) {
+int get_value(binary_tree_node* node, int index) {
   if (node == NULL)
-    return ;
-  if (node->key == key)
-    value = node->value;
+    return 0;
+  if (node->index == index)
+    return node->value;
   else {
-    get_value(node->left_child, key, value);
-    get_value(node->right_child, key, value);
+    // find in left child tree
+    int find_left = get_value(node->left_child, index);
+    // find in right child tree
+    int find_right = get_value(node->right_child, index);
+    return find_left | find_right;
   }
 }
 
-int bitree_get_value(binary_tree T, int key, char *value) {
+int bitree_get_value(binary_tree T, int index) {
 /* 
  * Function Name: bitree_get_value
  * Module: Data structures
- * Parameter: binary_tree T, int key, char *value
- * Return: int(status)
+ * Parameter: binary_tree T, int index
+ * Return: int(the value)
  * Use: get the value of a node
  */
 
-  get_value(T.root, key, value);
-  if (value == NULL)
-    return ERROR;
-  else
-    return OK;
+  if (T.root == NULL)
+    return 0;
+  return get_value(T.root, index);
 }
 
 // assist function to set value of a node
-void set_value(binary_tree_node *node, int key, char *value, int *safe_tag) {
+void set_value(binary_tree_node *node, int index, int value, int *safe_tag) {
   if (node == NULL)
     return ;
-  if (node->key == key) {
-    strcpy(node->value, value);
+  if (node->index == index) {
+    node->value = value;
+    // safe tag == 1 means set succeed
     *safe_tag = 1;
   }
   else {
-    set_value(node->left_child, key, value, safe_tag);
-    set_value(node->right_child, key,  value, safe_tag);
+    // set in left child tree
+    set_value(node->left_child, index, value, safe_tag);
+    // set in right child tree
+    set_value(node->right_child, index, value, safe_tag);
   }
 }
 
-int bitree_set_value(binary_tree *T, int key, char *value) {
+int bitree_set_value(binary_tree *T, int index, int value) {
 /* 
  * Function Name: bitree_set_value
  * Module: Data structures
- * Parameter: binary_tree *T, int key, char *value
+ * Parameter: binary_tree *T, int index, int value
  * Return: int(status)
  * Use: set the value of a node
  */
 
   int safe_tag = 0;
-  set_value(T->root, key, value, &safe_tag);
+  set_value(T->root, index, value, &safe_tag);
   if (safe_tag == 1)
     return OK;
   else
@@ -220,19 +229,21 @@ int bitree_set_value(binary_tree *T, int key, char *value) {
 }
 
 // assist function to get parent
-void get_parent(binary_tree_node* node, int key, binary_tree_node *parent) {
+binary_tree_node* get_parent(binary_tree_node* node, int index) {
   if (node == NULL)
-    return ;
-  if ((node->left_child != NULL && node->left_child->key == key) ||
-   (node->right_child != NULL && node->right_child->key == key))
-    parent = node;
-  else {
-    get_parent(node->left_child, key, parent);
-    get_parent(node->right_child, key, parent);
-  }
+    return NULL;
+  if ((node->left_child != NULL && node->left_child->index == index) ||
+   (node->right_child != NULL && node->right_child->index == index))
+    return node;
+  // find in left child tree
+  binary_tree_node *parent = get_parent(node->left_child, index);
+  // find in right child tree
+  if (parent == NULL)
+    parent = get_parent(node->right_child, index);
+  return parent;
 }
 
-binary_tree_node* bitree_parent(binary_tree T, int key) {
+binary_tree_node* bitree_parent(binary_tree T, int index) {
 /* 
  * Function Name: bitree_parent
  * Module: Data structures
@@ -241,323 +252,207 @@ binary_tree_node* bitree_parent(binary_tree T, int key) {
  * Use: get parent of a node
  */
 
-  binary_tree_node *parent = NULL;
-  get_parent(T.root, key, parent);
-  return parent;
+  return get_parent(T.root, index);
 }
 
-// assist function to get left child
-void get_left_child(binary_tree_node *node, int key, binary_tree_node *left_child) {
+// assist function to get child
+binary_tree_node* get_child(binary_tree_node *node, int LorR, int index) {
   if (node == NULL)
-    return ;
-  if (node->key == key)
-    left_child = node->left_child;
-  else {
-    get_left_child(node->left_child, key, left_child);
-    get_left_child(node->right_child, key, left_child);
+    return NULL;
+  if (node->index == index) {
+    if (LorR == LEFT)
+      return node->left_child;
+    else
+      return node->right_child;
   }
+  // find in left child tree
+  binary_tree_node *child = get_child(node->left_child, LorR, index);
+  // find in right child tree
+  if (child == NULL)
+    child = get_child(node->right_child, LorR, index);
+  return child;
 }
 
-binary_tree_node* bitree_left_child(binary_tree T, int key) {
+binary_tree_node* bitree_left_child(binary_tree T, int index) {
 /* 
  * Function Name: bitree_left_child
  * Module: Data structures
- * Parameter: binary_tree T, int key
+ * Parameter: binary_tree T, int index
  * Return: binary_tree_node*
  * Use: get left child of a node
  */
 
-  binary_tree_node *left_child = NULL;
-  get_left_child(T.root, key, left_child);
-  return left_child;
+  return get_child(T.root, LEFT, index);
 }
 
-// assist function to get right child
-void get_right_child(binary_tree_node *node, int key, binary_tree_node *right_child) {
-  if (node == NULL)
-    return ;
-  if (node->key == key)
-    right_child = node->right_child;
-  else {
-    get_right_child(node->left_child, key, right_child);
-    get_right_child(node->right_child, key, right_child);
-  }
-}
-
-binary_tree_node* bitree_right_child(binary_tree T, int key) {
+binary_tree_node* bitree_right_child(binary_tree T, int index) {
 /* 
  * Function Name: bitree_right_child
  * Module: Data structures
- * Parameter: binary_tree T, int key
+ * Parameter: binary_tree T, int index
  * Return: binary_tree_node*
  * Use: get right child of a node
  */
 
-  binary_tree_node *right_child = NULL;
-  get_right_child(T.root, key, right_child);
-  return right_child;  
+  return get_child(T.root, RIGHT, index);  
 }
 
 // assist function to get left sibling
-void get_left_sibling(binary_tree_node *node, int key, binary_tree_node *left_silbing) {
-  if (node == NULL || node->left_child->key == key)
-    return ;
-  if (node->right_child->key == key)
-    left_silbing = node->left_child;
-  else {
-    get_left_sibling(node->left_child, key, left_silbing);
-    get_left_sibling(node->right_child, key, left_silbing);
-  }
+binary_tree_node* get_sibling(binary_tree_node *node, int LorR, int index) {
+  if (node == NULL)
+    return NULL;
+  // get right child's left sibling
+  if (node->left_child != NULL && node->left_child->index == index && LorR == RIGHT)
+    return node->right_child;
+  // get left child's right sibling
+  else if (node->right_child != NULL && node->right_child->index == index && LorR == LEFT)
+    return node->left_child;
+  // find in left child tree
+  binary_tree_node *sibling = get_sibling(node->left_child, LorR, index);
+  // find in right child tree
+  if (sibling == NULL)
+    sibling = get_sibling(node->right_child, LorR, index);
+  return sibling;
 }
 
-binary_tree_node* bitree_left_sibling(binary_tree T, int key) {
+binary_tree_node* bitree_left_sibling(binary_tree T, int index) {
 /* 
  * Function Name: bitree_left_sibling
  * Module: Data structures
- * Parameter: binary_tree T, int key
+ * Parameter: binary_tree T, int index
  * Return: binary_tree_node*
  * Use: get left sibling of a node
  */
 
-  binary_tree_node *left_sibling = NULL;
-  if (T.root->key != key)
-    get_left_sibling(T.root, key, left_sibling);
-  return left_sibling;
+  return get_sibling(T.root, LEFT, index);
 }
 
-// assist function to get right sibling
-void get_right_sibling(binary_tree_node *node, int key,  binary_tree_node *right_sibling) {
-  if (node == NULL || node->right_child->key == key)
-    return ;
-  if (node->left_child->key == key)
-    right_sibling = node->right_child;
-  else {
-    get_right_sibling(node->left_child, key, right_sibling);
-    get_right_sibling(node->right_child, key, right_sibling);
-  }
-}
-
-binary_tree_node* bitree_right_sibling(binary_tree T, int key) {
+binary_tree_node* bitree_right_sibling(binary_tree T, int index) {
 /* 
  * Function Name: bitree_right_sibling
  * Module: Data structures
- * Parameter: binary_tree T, int key
+ * Parameter: binary_tree T, int index
  * Return: binary_tree_node*
  * Use: get right sibling of a node
  */
 
-  binary_tree_node *right_sibling;
-  if (T.root->key != key)
-    get_right_sibling(T.root, key, right_sibling);
-  return right_sibling;
-}
-
-// assist function to insert node
-binary_tree_node* insert_node(binary_tree_node *node, int ordered_key, int tag, int key, char *value, int *safe_tag, int *depth) {
-  if (node == NULL)  {
-    return NULL;
-  }
-  else if (node->key == ordered_key) {
-    // insert left child
-    if (tag == 0) {
-      if (node->left_child != NULL)
-        *safe_tag = 0;
-      else {
-        node->left_child = (binary_tree_node*)malloc(sizeof(binary_tree_node));
-        if (node->left_child != NULL) {
-          node->left_child->id = node->id * 2;
-          node->key = key;
-          strcpy(node->value, value);
-          node->left_child->left_child = NULL;
-          node->right_child->right_child = NULL;
-          if (1 << (*depth - 1) <= node->left_child->id)
-            (*depth)++;
-        }
-        else
-          *safe_tag = 0;
-      }
-    }
-    // insert right child
-    else {
-      if (node->right_child != NULL)
-        *safe_tag = 0;
-      else {
-        node->right_child = (binary_tree_node*)malloc(sizeof(binary_tree_node));
-        if (node->right_child != NULL) {
-          node->right_child->id = node->id * 2;
-          node->key = key;
-          strcpy(node->value, value);
-          node->left_child = NULL;
-          node->right_child = NULL;
-          if (1 << (*depth - 1) <= node->right_child->id)
-            (*depth)++;
-        }
-        else
-          *safe_tag = 0;
-      }
-    }
-  }
-  else {
-    node->left_child = insert_node(node->left_child, ordered_key, tag, key, value, safe_tag, depth);
-    node->right_child = insert_node(node->right_child, ordered_key, tag, key, value, safe_tag, depth);
-  }
-  return node;
-}
-
-int bitree_insert_node(binary_tree *T, int ordered_key, int tag, int key, char *value) {
-/* 
- * Function Name: bitree_insert_node
- * Module: Data structures
- * Parameter: binary_tree *T, int ordered_key, int tag, int key, char *value
- * Return: int(status)
- * Use: insert a node in a binary tree
- */
-
-  // a safe tag to judge whether insert ok
-  int safe_tag = 1;
-  if (T->root == NULL) {
-    T->root = (binary_tree_node*)malloc(sizeof(binary_tree_node));
-    T->root->id = 1;
-    T->root->key = key;
-    strcpy(T->root->value, value);
-    T->root->left_child = NULL;
-    T->root->right_child = NULL;
-    T->size = 1;
-    T->depth = 1;
-    return OK;
-  }
-  T->root = insert_node(T->root, ordered_key, tag, key, value, &safe_tag, &T->depth);
-  if (safe_tag == 1) {
-    T->size++;
-    return OK;
-  }
-  else
-    return ERROR;
-}
-
-// generate the node id and tree depth
-binary_tree_node *generate_id(binary_tree_node *node, int id, int *depth) {
-  if (node == NULL)
-    return NULL;
-  node->id = id;
-  if (1 << (*depth - 1) <= node->id)
-    (*depth)++;
-  node->left_child = generate_id(node->left_child, id * 2, depth);
-  node->right_child = generate_id(node->right_child, id * 2 + 1, depth);
-  return node;
+  return get_sibling(T.root, RIGHT, index);
 }
 
 // assist function to insert child tree
-binary_tree_node* insert_child_tree(binary_tree_node *node, int ordered_key, int tag, binary_tree *C, int *depth) {
-  if (node == NULL) {
+binary_tree_node* insert_child_tree(binary_tree_node *node, int index, int LorR, binary_tree_node *sub_tree) {
+  if (node == NULL)
     return NULL;
-  }
-  else if (node->key == ordered_key) {
-    // insert left child tree
-    if (tag == 0) {
-      C->root->right_child = node->left_child;
-      node->left_child = C->root;
-      node = generate_id(node, node->id, depth);
+  if (node->index == index) {
+    binary_tree_node *tmp_node;
+    // insert as left child
+    if (LorR == LEFT) {
+      tmp_node = node->left_child;
+      node->left_child = sub_tree;
     }
-    // insert right child tree
+    // insert as right child
     else {
-      C->root->right_child = node->right_child;
-      node->right_child = C->root;
-      node = generate_id(node, node->id, depth);
+      tmp_node = node->right_child;
     }
+      node->right_child = tmp_node;    
   }
-  else {
-    node->left_child = insert_child_tree(node->left_child, ordered_key, tag, C, depth);
-    node->left_child = insert_child_tree(node->left_child, ordered_key, tag, C, depth);
-  }
+  // find in left child tree
+  node->left_child = insert_child_tree(node->left_child, index, LorR, sub_tree);
+  // find in right child tree
+  node->right_child = insert_child_tree(node->right_child, index, LorR, sub_tree);
   return node;
 }
 
-int bitree_insert_child_tree(binary_tree *T, int ordered_key, int tag, binary_tree *C) {
+int bitree_insert_child_tree(binary_tree *T, int index, int LorR, binary_tree *C) {
 /* 
- * Function Name: bitree_insert_child_tree
+ * Function Name: bitree_insert_child
  * Module: Data structures
- * Parameter: binary_tree *T, int ordered_key, int tag, binary_tree *C
+ * Parameter: binary_tree *T, int index, int LorR, binary_tree_node *sub_tree
  * Return: int(status)
  * Use: insert a child tree in a binary tree
  */
 
-  if (T->root == NULL || C->root->right_child != NULL)
+  if (T->root == NULL || C->root == NULL || C->root->right_child != NULL)
     return ERROR;
-  T->root = insert_child_tree(T->root, ordered_key, tag, C, &T->depth);
-  T->size += C->size;
+  T->size += C->size;  
+  T->root = insert_child_tree(T->root, index, LorR, C->root);
   return OK;
 }
 
-binary_tree_node* delete_child_tree(binary_tree_node *node, int order_key, int tag, int *safe_tag) {
+// assist function to search a node
+int search_bitree(binary_tree_node *node, int index) {
+  if (node == NULL)
+    return 0;
+  if (node->index == index)
+    return 1;
+  return search_bitree(node->left_child, index) | search_bitree(node->right_child, index);
+}
+
+// assist function to count binary tree nodes
+int count_bitree(binary_tree_node *node) {
+  if (node == NULL)
+    return 0;
+  return 1 + count_bitree(node->left_child) + count_bitree(node->right_child);
+}
+
+
+binary_tree_node* delete_child_tree(binary_tree_node *node, int index, int LorR) {
   if (node == NULL)
     return NULL;
-  else if (node->key == order_key) {
+  if (node->index == index) {
     // delete left child tree
-    if (tag == 0) {
-      if (node->left_child != NULL) {
-        *safe_tag = 1;
-        free_nodes(node->left_child);
-        node->left_child = NULL;
-      }
+    if (LorR == LEFT) {
+      free_nodes(node->left_child);
+      node->left_child = NULL;
     }
     // delete right child tree
     else {
-      if (node->right_child != NULL) {
-        *safe_tag = 1;
-        free_nodes(node->right_child);
-        node->right_child = NULL;
-      }
+      free_nodes(node->right_child);
+      node->right_child = NULL;
     }
   }
-  else {
-    node->left_child = delete_child_tree(node->left_child, order_key, tag, safe_tag);
-    node->right_child = delete_child_tree(node->right_child, order_key, tag, safe_tag);
-  }
+  // find in left child tree
+  node->left_child = delete_child_tree(node->left_child, index, LorR);
+  // find in right child tree
+  node->right_child = delete_child_tree(node->right_child, index, LorR);
   return node;
 }
 
-// assist function to count the tree node after delete a child tree
-void count_tree(binary_tree_node *node, int *size, int *depth) {
-  if (node == NULL)
-    return ;
-  else {
-    (*size)++;
-    if (1 << (*depth - 1) <= node->id)
-      (*depth)++;
-    count_tree(node->left_child, size, depth);
-    count_tree(node->right_child, size, depth);
-  }
-}
-
-int bitree_delete_child_tree(binary_tree *T, int ordered_key, int tag)  {
+int bitree_delete_child_tree(binary_tree *T, int index, int LorR)  {
 /* 
- * Function Name: bitree_delete_child_tree
+ * Function Name: bitree_delete_child
  * Module: Data structures
- * Parameter: binary_tree *T, int ordered_key, int tag, binary_tree *C
+ * Parameter: binary_tree *T, int index, int LorR
  * Return: int(status)
  * Use: delete a child tree in a binary tree
  */
 
-  if (T->root == NULL)
+  if (T->root == NULL || !search_bitree(T->root, index))
     return ERROR;
-  int safe_tag = 0;
-  T->root = delete_child_tree(T->root, ordered_key, tag, &safe_tag);
-  T->size = 0;
-  T->depth = 0;
-  count_tree(T->root, &T->size, &T->depth);
+  T->root = delete_child_tree(T->root, index, LorR);
+  T->size = count_bitree(T->root);
   return OK;
 }
 
-// assist function to preorder traverse the binary tree
-void preorder_traverse(binary_tree_node *node) {
+// assist function to traverse the binary tree
+void traverse_bitree(binary_tree_node *node, int order) {
   if (node == NULL)
-    printf("NULL\n");
-  else {
-    printf("Key: %d, value: %s\n", node->key, node->value);
+    return ;
+  if (order == PRE_ORDER) {
+    printf("Index: %d, value: %d\n", node->index, node->value);
+    traverse_bitree(node->left_child, order);
+    traverse_bitree(node->right_child, order);
   }
-  preorder_traverse(node->left_child);
-  preorder_traverse(node->right_child);
+  else if (order == IN_ORDER) {
+    traverse_bitree(node->left_child, order);
+    printf("Index: %d, value: %d\n", node->index, node->value);
+    traverse_bitree(node->right_child, order);
+  }
+  else if (order == POST_ORDER) {
+    traverse_bitree(node->left_child, order);
+    traverse_bitree(node->right_child, order);
+    printf("Index: %d, value: %d\n", node->index, node->value);
+  }
 }
 
 int bitree_preorder_traverse(binary_tree T) {
@@ -572,21 +467,9 @@ int bitree_preorder_traverse(binary_tree T) {
   if (T.root == NULL)
     return ERROR;
   printf("Preorder traverse:\n");
-  printf("Tree size: %d\n",  T.size);
-  printf("Tree depth: %d\n",  T.depth);
-  preorder_traverse(T.root);
+  printf("Tree size: %d\n", T.size);
+  traverse_bitree(T.root, PRE_ORDER);
   return OK;
-}
-
-// assist function to inorder traverse the binary tree
-void inorder_traverse(binary_tree_node *node) {
-  inorder_traverse(node->left_child);
-  if (node == NULL)
-    printf("NULL\n");
-  else {
-    printf("Key: %d, value: %s\n", node->key, node->value);
-  }
-  inorder_traverse(node->right_child);
 }
 
 int bitree_inorder_traverse(binary_tree T) {
@@ -602,20 +485,8 @@ int bitree_inorder_traverse(binary_tree T) {
     return ERROR;
   printf("Inorder traverse:\n");
   printf("Tree size: %d\n",  T.size);
-  printf("Tree depth: %d\n",  T.depth);
-  inorder_traverse(T.root);
+  traverse_bitree(T.root, IN_ORDER);
   return OK;
-}
-
-// assist function to postorder traverse the binary tree
-void postorder_traverse(binary_tree_node *node) {
-  postorder_traverse(node->left_child);
-  postorder_traverse(node->right_child);
-  if (node == NULL)
-    printf("NULL\n");
-  else {
-    printf("Key: %d, value: %s\n", node->key, node->value);
-  }
 }
 
 int bitree_postorder_traverse(binary_tree T) {
@@ -631,8 +502,7 @@ int bitree_postorder_traverse(binary_tree T) {
     return ERROR;
   printf("Postorder traverse:\n");
   printf("Tree size: %d\n",  T.size);
-  printf("Tree depth: %d\n",  T.depth);
-  postorder_traverse(T.root);
+  traverse_bitree(T.root, POST_ORDER);
   return OK;
 }
 
@@ -652,12 +522,11 @@ int bitree_levelorder_traverse(binary_tree T) {
   binary_tree_node *node;
   printf("Levelorder traverse:\n");
   printf("Tree size: %d\n",  T.size);
-  printf("Tree depth: %d\n",  T.depth);
   // use a queue to levelorder traverse the  binary tree
   EnQueue(&my_node_queue, T.root);
   while (!IsEmpty(&my_node_queue)) {
     node = DeQueue(&my_node_queue);
-    printf("Key: %d, value: %s\n", node->key, node->value);
+    printf("Index: %d, value: %d\n", node->index, node->value);
     if (node->left_child != NULL)
       EnQueue(&my_node_queue, node->left_child);
     if (node->right_child != NULL)

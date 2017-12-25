@@ -17,6 +17,7 @@ int init_list(linear_list *L) {
 
   memset(L, 0, sizeof(linear_list));
   L->data = (int *)malloc(sizeof(int) * LIST_INIT_SIZE);
+  // not enough memory
   if (L->data == NULL)
     return ERROR;
   L->length = 0;
@@ -33,6 +34,7 @@ int destroy_list(linear_list *L) {
  * Use: destroy the link list
  */
 
+  // directly free the L->data
   if (L->data != NULL)
     free(L->data);
   memset(L, 0, sizeof(linear_list));
@@ -50,10 +52,10 @@ int clear_list(linear_list *L) {
 
   if (L->data == NULL)
     return ERROR;
+  // set the whole memory to 0
   memset(L->data, 0, sizeof(int) * L->size);
   L->length = 0;
   L->size = LIST_INIT_SIZE;
-
   return OK;
 }
 
@@ -94,8 +96,9 @@ int get_list_item(linear_list L, int order, int *elem) {
  */
 
   int index = 0;
+  // condition check
   if (order > L.length || order <= 0 || L.length == 0 || L.data == NULL)
-    return ERROR;  
+    return ERROR;
   *elem = *(L.data + order - 1);
   return OK;  
 }
@@ -110,6 +113,7 @@ int locate_list_item(linear_list L, int ordered_elem) {
  */
 
   int index = 0;
+  // traverse and find the ordered elem
   for (index = 0; index < L.length; index++) {
     if (*(L.data + index) == ordered_elem)
       break;
@@ -119,7 +123,6 @@ int locate_list_item(linear_list L, int ordered_elem) {
   else
     return index + 1;
 }
-
 
 int piror_list_item(linear_list L, int elem, int *elem_pre) {
 /* 
@@ -131,6 +134,7 @@ int piror_list_item(linear_list L, int elem, int *elem_pre) {
  */
 
   int index;
+  // traverse and find the ordered elem
   for (index = 1; index < L.length; index++) {
     if (*(L.data + index) == elem) {
       *elem_pre = *(L.data + index - 1);
@@ -154,6 +158,7 @@ int next_list_item(linear_list L, int elem, int *elem_next) {
  */
 
   int index;
+  // traverse and find the ordered elem
   for (index = 0; index < L.length - 1; index++)  {
     if (*(L.data + index) == elem) {
       *elem_next = *(L.data + index + 1);
@@ -175,16 +180,20 @@ int list_insert(linear_list *L, int order, int elem) {
  * Use: insert a element in the link list
  */
 
+  // condition check
   if (order > L->size || order <= 0 || L->size == 0 || L->data == NULL)
     return ERROR;
+  // not enouth storage, alloc new memory
   if (L->length == L->size) {
     int *new_base = (int*)realloc(L->data, (L->size + LIST_INCREASEMENT) * sizeof(int));
+    // not enouth memory
     if (new_base == NULL)
       return ERROR;
     L->data = new_base;
     L->size += LIST_INCREASEMENT;
   }
   int index;
+  // move the elements after the ordered position
   for (index = L->size; index >= order; index--)
     *(L->data + index) = *(L->data + index - 1);
   *(L->data + order - 1) = elem;
@@ -201,10 +210,12 @@ int list_delete(linear_list	*L, int order, int *elem) {
  * Use: delete a element in the link list
  */
 
+  // condition check
   if (order > L->length || order <= 0 || L->size == 0 || L->data == NULL)
     return ERROR;
   int index;
   *elem = *(L->data + order - 1);
+  // move the elements after the ordered position
   for (index = order - 1; index < L->length - 1; index++)
     *(L->data + index) = *(L->data + index + 1);
   L->length--;

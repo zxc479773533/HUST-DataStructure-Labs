@@ -30,6 +30,7 @@ int destroy_list(link_list *L) {
  */
 
   link_node *a_node = L->head;
+  // traverse and free nodes
   while (a_node != NULL) {
       link_node *tmp = a_node;
       a_node = a_node->next;
@@ -51,6 +52,7 @@ int clear_list(link_list *L) {
   link_node *a_node = L->head;
   if (a_node == NULL)
     return ERROR;
+  // traverse and free node
   while (a_node != NULL) {
     link_node *tmp = a_node;
     a_node = a_node->next;
@@ -99,6 +101,7 @@ int get_list_item(link_list L, int order, int *elem) {
 
   int index = 0;
   link_node *a_node = L.head;
+  // traverse and find the ordered node
   while (a_node != NULL) {
     index++;
     if (index == order) {
@@ -124,6 +127,7 @@ int locate_list_item(link_list L, int ordered_elem) {
 
   int index = 0;
   link_node *a_node = L.head;
+  // traverse and find the ordered node
   while (a_node != NULL) {
     index++;
     if (a_node->data == ordered_elem)
@@ -147,6 +151,7 @@ int piror_list_item(link_list L, int elem, int *elem_pir) {
 
   link_node *piror_node = L.head;
   link_node *a_node = piror_node->next;
+  // traverse and find the order node
   while (a_node != NULL) {
     if (a_node->data == elem) {
       *elem_pir = piror_node->data;
@@ -172,6 +177,7 @@ int next_list_item(link_list L, int elem, int *elem_next) {
 
   link_node *a_node = L.head;
   link_node *next_node = a_node->next;
+  // traverse and find the order node
   while (next_node != NULL) {
     if (a_node->data == elem) {
       *elem_next = next_node->data;
@@ -197,6 +203,7 @@ int list_insert(link_list *L, int order, int elem) {
 
   int index = 0;
   link_node *a_node = L->head;
+  // the first node should be discussed separately
   if (order == 1) {
     link_node *new_node = (link_node*)malloc(sizeof(link_node));
     new_node->data = elem;
@@ -205,6 +212,7 @@ int list_insert(link_list *L, int order, int elem) {
     L->length++;
     return OK;
   }
+  // start find the ordered node from the 2nd node
   while (a_node != NULL) {
     index++;
     if (index == order - 1) {
@@ -232,16 +240,19 @@ int list_delete(link_list	*L, int order, int *elem) {
  * Use: delete a element in the link list
  */
 
+  // condition check
   if (L->length == 0 || L->head == NULL)
     return ERROR;
   int index = 0;
   link_node *a_node = L->head;
+  // the first node should be discussed separately
   if (order == 1) {
     L->head = a_node->next;
     free(a_node);
     L->length--;
     return OK;
   }
+  // start find the ordered node from the 2nd node
   while (a_node != NULL) {
     index++;
     if (index == order - 1) {
