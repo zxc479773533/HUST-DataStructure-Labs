@@ -246,11 +246,13 @@ int list_delete(link_list	*L, int order, int *elem) {
     index++;
     if (index == order - 1) {
       link_node *tmp = a_node->next;
+      *(elem) = tmp->data;
       a_node->next = a_node->next->next;
       free(tmp);
       L->length--;
       break;
     }
+    a_node = a_node->next;
   }
   if (a_node != NULL)
     return OK;
