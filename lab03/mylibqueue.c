@@ -96,46 +96,5 @@ int IsEmpty(LinkQueue *Q) {
     return 0;
 }
 
-// the code not use in this project
 
-/*
-// input:LinkQueue
-// output:null
-void PrintQueue(LinkQueue *Q) {
-  QNode* p = Q->front->next;
-  while (p != NULL) {
-    printf("%s\n", p->data);
-    p = p->next;
-  }
-}
-
-// input:LinkQueue
-// output:the first
-ElemType GetQueueHead(LinkQueue *Q) {
-  return Q->front->next->data;
-}
-
-// input:LinkQueue, the file data saved
-// output:none
-void SaveQueue(LinkQueue *Q, FILE *fp) {
-  QNode *p = Q->front->next;
-  while(p != NULL) {
-    fwrite(p, sizeof(p), 1, fp);
-    p = p->next;
-  }
-}
-
-// input:LinkQueue, the file data saved
-// output:none
-void LoadQueue(LinkQueue *Q, FILE *fp) {
-  int size = 1; 
-  while (1) {
-    QNode *tmp = (QNode *)malloc(sizeof(QNode));
-    size = fread(tmp, sizeof(QNode), 1, fp);
-    if (size == 0)
-      break;
-    EnQueue(Q, tmp->data);
-  }
-}
-*/
 #endif // !__LIBQUEUE_H_
