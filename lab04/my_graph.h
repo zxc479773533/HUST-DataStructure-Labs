@@ -35,6 +35,7 @@ typedef struct vertex_node {
   int index;
   int value;
   arc_node *first_arc;
+  struct vertex_node *next;
 } vertex_node;
 
 // the struct of graph
@@ -44,7 +45,7 @@ typedef struct graph {
   int vertex_num;
   int arc_num;
   int kind;
-  graph *next;
+  struct graph *next;
 } graph;
 
 // the struct for managin the graph
@@ -55,25 +56,30 @@ typedef struct Graph_main {
 // the struct to save the graph
 typedef struct Graph_store {
   int id;
+  int kind;
   int vertex_num;
   int arc_num;
   int *v_indexs;
   int *v_values;
-  int **a_matrix;
+  int *a_matrix;
 } Graph_store;
 
 
-int creat_graph(graph &G, int v_num, int a_num, int *v_indexs, int *v_values, int **a_matrix);
+// assist function to get a vertax's position
+int get_vex_pos(graph *G, int index);
+
+
+int creat_graph(graph *G, int kind, int v_num, int a_num, int *v_indexs, int *v_values, int *a_matrix);
 /* 
  * Function Name: creat_graph
  * Module: Data structures
- * Parameter: graph &G, int v_num, int a_num, int *v_indexs, int *v_values, int **a_matrix
+ * Parameter: graph &G, int v_num, int kind, int a_num, int *v_indexs, int *v_values, int *a_matrix
  * Return: int(status)
  * Use: create a graph
  */
 
 
-int destory_graph(graph &G);
+int destory_graph(graph *G);
 /* 
  * Function Name: destory_graph
  * Module: Data structures
@@ -83,7 +89,7 @@ int destory_graph(graph &G);
  */
 
 
-int locate_vex(graph &G, int value);
+int locate_vex(graph *G, int value);
 /* 
  * Function Name: locate_vex
  * Module: Data structures
@@ -93,7 +99,7 @@ int locate_vex(graph &G, int value);
  */
 
 
-int get_vex_value(graph &G, int index);
+int get_vex_value(graph *G, int index);
 /* 
  * Function Name: get_vex_value
  * Module: Data structures
@@ -103,7 +109,7 @@ int get_vex_value(graph &G, int index);
  */
 
 
-int set_vex_value(graph &G, int index, int value);
+int set_vex_value(graph *G, int index, int value);
 /* 
  * Function Name: set_vex_value
  * Module: Data structures
@@ -113,27 +119,36 @@ int set_vex_value(graph &G, int index, int value);
  */
 
 
-arc_node* first_adj_vex(graph &G, int index);
+int set_arc_weight(graph *G, int src_index, int dst_index, int weight);
+/* 
+ * Function Name: set_arc_weight
+ * Module: Data structures
+ * Parameter: graph *G, int src_index, int dst_index, int weight
+ * Return: int(statue)
+ * Use: set an arc's weight
+ */
+
+vertex_node* first_adj_vex(graph *G, int index);
 /* 
  * Function Name: first_adj_vex
  * Module: Data structures
  * Parameter: graph &G, int index
- * Return: arc_node*(the first vertex)
+ * Return: vertex_node*(the first vertex)
  * Use: get the fitst adjacency vertex
  */
 
 
-arc_node* next_adj_vex(graph &G, int index, int now_index);
+vertex_node* next_adj_vex(graph *G, int index, int now_index);
 /* 
  * Function Name: next_adj_vex
  * Module: Data structures
  * Parameter: graph &G, int index, int now_index
- * Return: arc_node*(the next vertex)
+ * Return: vertex_node*(the next vertex)
  * Use: get the next adjacency vertex
  */
 
 
-int insert_vex(graph &G, int index, int value);
+int insert_vex(graph *G, int index, int value);
 /* 
  * Function Name: insert_vex
  * Module: Data structures
@@ -143,7 +158,7 @@ int insert_vex(graph &G, int index, int value);
  */
 
 
-int delete_vex(graph &G, int index);
+int delete_vex(graph *G, int index);
 /* 
  * Function Name: delete_vex
  * Module: Data structures
@@ -153,7 +168,7 @@ int delete_vex(graph &G, int index);
  */
 
 
-int insert_arc(graph &G, int src_vex, int dst_vex, int weight);
+int insert_arc(graph *G, int src_vex, int dst_vex, int weight);
 /* 
  * Function Name: insert_arc
  * Module: Data structures
@@ -163,7 +178,7 @@ int insert_arc(graph &G, int src_vex, int dst_vex, int weight);
  */
 
 
-int delete_arc(graph &G, int src_vex, int dst_vex);
+int delete_arc(graph *G, int src_vex, int dst_vex);
 /* 
  * Function Name: delete_arc
  * Module: Data structures
@@ -173,7 +188,7 @@ int delete_arc(graph &G, int src_vex, int dst_vex);
  */
 
 
-int dfs_traverse(graph &G);
+int dfs_traverse(graph *G);
 /* 
  * Function Name: dfs_traverse
  * Module: Data structures
@@ -183,7 +198,7 @@ int dfs_traverse(graph &G);
  */
 
 
-int bfs_traverse(graph &G);
+int bfs_traverse(graph *G);
 /* 
  * Function Name: bfs_traverse
  * Module: Data structures
