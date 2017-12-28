@@ -64,6 +64,10 @@ void load_data(Binary_tree_main *Main_T) {
     init_binary_tree(tmp_tree);
 
     if (def.size != 0) {
+      def.pre_index = (int*)malloc(sizeof(int) * def.size);
+      def.pre_defination = (int*)malloc(sizeof(int) * def.size);
+      def.in_index = (int*)malloc(sizeof(int) * def.size);
+      def.in_defination = (int*)malloc(sizeof(int) * def.size);
       fread(def.pre_index, sizeof(int) * def.size, 1, fp);
       fread(def.pre_defination, sizeof(int) * def.size, 1, fp);
       fread(def.in_index, sizeof(int) * def.size, 1, fp);
@@ -877,6 +881,7 @@ int main(void) {
 
       case 0:
         printf("Thanks for using my demo system!\n");
+        save_data(&Main_T);
         break;
       
       default:

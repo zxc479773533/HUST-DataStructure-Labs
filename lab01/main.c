@@ -10,7 +10,7 @@ void print_menu(void) {
  */
 
   printf("+--------------------------------------------------------------------+\n");
-  printf("|             Welcome to panyue's linear list demo system!             |\n");
+  printf("|             Welcome to panyue's linear list demo system!           |\n");
   printf("|               Here are some functions you can call:                |\n");
   printf("|                                                                    |\n");
   printf("|               1: init_list           2: destroy_list               |\n");
