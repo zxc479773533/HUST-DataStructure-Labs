@@ -547,7 +547,7 @@ int main(void) {
         printf(" * Use: delete an arc in graph\n");
         printf(" */\n");
         printf("\n");
-        printf("                                     Format: id src_index dst_index weight\n");
+        printf("                                     Format: id src_index dst_index\n");
         printf("Then, enter the graph id, src and dst index: ");
 
         scanf("%d %d %d", &id, &src, &dst);

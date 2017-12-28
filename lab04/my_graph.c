@@ -264,7 +264,32 @@ int delete_vex(graph *G, int index) {
   if (search_graph(G, index) == NULL)
     return ERROR;
     G->vertex_num--;
+
+  // delete the arc whose dst is index
   vertex_node *a_node = G->first_vertex;
+  while (a_node != NULL) {
+    arc_node *an_arc = a_node->first_arc;
+    // if delete the first arc
+    if (an_arc->vertex == index) {
+      a_node->first_arc = a_node->first_arc->next;
+      free(an_arc);
+      continue;
+    }
+    // find the arc whose dst is index
+    while (an_arc->next != NULL) {
+      if (an_arc->next->vertex == index) {
+        arc_node *tmp_arc = an_arc->next;
+        an_arc->next = an_arc->next->next;
+        free(tmp_arc);
+        break;
+      }
+      an_arc = an_arc->next;
+    }
+    a_node = a_node->next;
+  }
+
+  // delete the arc whose src is index
+  a_node = G->first_vertex;
   // if delete the first node
   if (a_node->index == index) {
     // free the arcs
@@ -304,8 +329,16 @@ void add_an_arc(vertex_node *src_vex, int dst_vex, int weight) {
   arc_node *new_arc = (arc_node*)malloc(sizeof(arc_node));
   new_arc->vertex = dst_vex;
   new_arc->weight = weight;
-  new_arc->next = src_vex->first_arc;
-  src_vex->first_arc = new_arc;
+  new_arc->next = NULL;
+  // insert in tail
+  if (src_vex->first_arc == NULL)
+    src_vex->first_arc = new_arc;
+  else {
+    arc_node *an_arc = src_vex->first_arc;
+    while (an_arc->next != NULL)
+      an_arc = an_arc->next;
+    an_arc->next = new_arc;
+  }
 }
 
 int insert_arc(graph *G, int src_vex, int dst_vex, int weight) {
