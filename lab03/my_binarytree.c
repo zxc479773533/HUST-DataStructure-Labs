@@ -353,8 +353,9 @@ binary_tree_node* insert_child_tree(binary_tree_node *node, int index, int LorR,
     // insert as right child
     else {
       tmp_node = node->right_child;
+      node->right_child = sub_tree;
     }
-      node->right_child = tmp_node;    
+    sub_tree->right_child = tmp_node;
   }
   // find in left child tree
   node->left_child = insert_child_tree(node->left_child, index, LorR, sub_tree);

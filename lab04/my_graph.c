@@ -263,16 +263,22 @@ int delete_vex(graph *G, int index) {
 
   if (search_graph(G, index) == NULL)
     return ERROR;
-    G->vertex_num--;
+  G->vertex_num--;
 
   // delete the arc whose dst is index
   vertex_node *a_node = G->first_vertex;
   while (a_node != NULL) {
     arc_node *an_arc = a_node->first_arc;
+    if (an_arc == NULL) {
+      a_node = a_node->next;
+      continue;
+    }
     // if delete the first arc
     if (an_arc->vertex == index) {
       a_node->first_arc = a_node->first_arc->next;
       free(an_arc);
+      G->arc_num--;
+      a_node = a_node->next;
       continue;
     }
     // find the arc whose dst is index
@@ -281,6 +287,7 @@ int delete_vex(graph *G, int index) {
         arc_node *tmp_arc = an_arc->next;
         an_arc->next = an_arc->next->next;
         free(tmp_arc);
+        G->arc_num--;
         break;
       }
       an_arc = an_arc->next;
@@ -298,6 +305,7 @@ int delete_vex(graph *G, int index) {
       arc_node *tmp_arc = an_arc;
       an_arc = an_arc->next;
       free(tmp_arc);
+      G->arc_num--;
     }
     // free the vertex
     G->first_vertex = G->first_vertex->next;
@@ -314,6 +322,7 @@ int delete_vex(graph *G, int index) {
         arc_node *tmp_arc = an_arc;
         an_arc = an_arc->next;
         free(tmp_arc);
+        G->arc_num--;
       }
       // free the node
       a_node->next = a_node->next->next;

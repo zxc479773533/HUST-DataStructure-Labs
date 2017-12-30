@@ -68,7 +68,7 @@ void load_data(Graph_main *Main_G) {
     
     def.v_indexs = (int*)malloc(sizeof(int) * def.vertex_num);
     def.v_values = (int*)malloc(sizeof(int) * def.vertex_num);
-    def.a_matrix = (int*)malloc(sizeof(int) * def.vertex_num);
+    def.a_matrix = (int*)malloc(sizeof(int) * def.vertex_num * def.vertex_num);
     fread(def.v_indexs, sizeof(int) * def.vertex_num, 1, fp);
     fread(def.v_values, sizeof(int) * def.vertex_num, 1, fp);
     fread(def.a_matrix, sizeof(int) * def.vertex_num * def.vertex_num, 1, fp);
