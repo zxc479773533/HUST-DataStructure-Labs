@@ -390,6 +390,7 @@ void del_an_arc(vertex_node *src_vex, int dst_vex) {
         an_arc->next = an_arc->next->next;
         free(tmp_arc);
       }
+      an_arc = an_arc->next;
     }
   }
 }
