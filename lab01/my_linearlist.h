@@ -24,7 +24,7 @@
 // the main struct of linear list
 typedef struct linear_list {
 	int id;
-  int *data;
+	int *data;
 	int length;
 	int size;
 	struct linear_list *next;

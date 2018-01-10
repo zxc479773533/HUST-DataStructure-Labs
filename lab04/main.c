@@ -26,7 +26,7 @@ void print_menu(void) {
   printf("|              9: insert_vex            10: delete_vex               |\n");  
   printf("|             11: insert_arc            12: delete_arc               |\n");
   printf("|             13: dfs_traverse          14: bfs_traverse             |\n");
-  printf("|             15: ls_list                0: quit                     |\n");
+  printf("|             15: ls_graph               0: quit                     |\n");
   printf("|                                                                    |\n");
   printf("|Enter the number of the function and see the usage and call it!     |\n");
   printf("|Enter 0 to quit the demo system.                                    |\n");

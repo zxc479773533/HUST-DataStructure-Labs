@@ -11,6 +11,7 @@
 vertex_node* search_graph(graph *G, int index) {
   vertex_node *a_node = G->first_vertex;
   while (a_node != NULL) {
+    // find the vertex
     if (a_node->index == index)
       break;
     a_node = a_node->next;
@@ -25,6 +26,7 @@ arc_node* search_arc(graph *G, int src_vex, int dst_vex) {
     return NULL;
   arc_node *an_arc = src_node->first_arc;
   while (an_arc != NULL) {
+    // find the arc
     if (an_arc->vertex == dst_vex)
       break;
     an_arc = an_arc->next;
@@ -161,6 +163,11 @@ int set_arc_weight(graph *G, int src_index, int dst_index, int weight) {
   if (arc == NULL)
     return ERROR;
   arc->weight = weight;
+  // if the graph is undirected, also set the weight of "dst" to "src"
+  if (G->kind == UNDIRECTED_GRAPH || G->kind == UNDIRECTED_NET) {
+    arc = search_arc(G, dst_index, src_index);
+    arc->weight = weight;
+  }
   return OK;
 }
 
@@ -236,13 +243,16 @@ int insert_vex(graph *G, int index, int value) {
   vertex_node *new_vex = (vertex_node*)malloc(sizeof(vertex_node));
   if (new_vex == NULL)
     return ERROR;
+  // set new vertex
   G->vertex_num++;
   new_vex->index = index;
   new_vex->value = value;
   new_vex->first_arc = NULL;
   new_vex->next = NULL;
+  // insert in the first
   if (G->first_vertex == NULL)
     G->first_vertex = new_vex;
+  // insert in behind the lase
   else {
     vertex_node *a_node = G->first_vertex;
     while (a_node->next != NULL)
@@ -339,9 +349,10 @@ void add_an_arc(vertex_node *src_vex, int dst_vex, int weight) {
   new_arc->vertex = dst_vex;
   new_arc->weight = weight;
   new_arc->next = NULL;
-  // insert in tail
+  // insert in first
   if (src_vex->first_arc == NULL)
     src_vex->first_arc = new_arc;
+  // insert behind the last
   else {
     arc_node *an_arc = src_vex->first_arc;
     while (an_arc->next != NULL)
@@ -377,11 +388,13 @@ int insert_arc(graph *G, int src_vex, int dst_vex, int weight) {
 
 // assist function to delete an arc
 void del_an_arc(vertex_node *src_vex, int dst_vex) {
+  // if delete first
   if (src_vex->first_arc->vertex == dst_vex) {
     arc_node *tmp_arc = src_vex->first_arc;
     src_vex->first_arc = src_vex->first_arc->next;
     free(tmp_arc);
   }
+  // traverse and find the arc
   else {
     arc_node *an_arc = src_vex->first_arc;
     while (an_arc->next != NULL) {
@@ -439,6 +452,7 @@ void DFS(graph *G, vertex_node *vertex, int *visit, int pos) {
   for (a_node = first_adj_vex(G, vertex->index); a_node != NULL; 
   a_node = next_adj_vex(G, vertex->index, a_node->index)) {
     int pos = get_vex_pos(G, a_node->index);
+    // if not visited, just visit it
     if (!visit[pos])
       DFS(G, a_node, visit, pos);
    }
@@ -504,6 +518,7 @@ int bfs_traverse(graph *G) {
         for (a_node = first_adj_vex(G, node->index); a_node != NULL; 
         a_node = next_adj_vex(G, node->index, a_node->index)) {
           int next_pos = get_vex_pos(G, a_node->index);
+          // if not visited, just visit it
           if (!visit[next_pos]) {
             visit[next_pos] = 1;
             EnQueue(&my_node_queue, a_node);

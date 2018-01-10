@@ -881,7 +881,6 @@ int main(void) {
 
       case 0:
         printf("Thanks for using my demo system!\n");
-        save_data(&Main_T);
         break;
       
       default:
